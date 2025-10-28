@@ -25,7 +25,7 @@ import hero6mobile from "../assets/Images/hero6mobile.jpg";
 
 const HomePage = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // true on mobile
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Hero images array: choose mobile or desktop
   const heroImages = [
@@ -41,8 +41,10 @@ const HomePage = () => {
     <Box>
       {/* Hero section */}
       <Box sx={{ position: "relative", width: "100%" }}>
-        {/* Top bar */}
-        <TopBar />
+        {/* Top bar above Swiper */}
+        <Box sx={{ position: "relative", zIndex: 20 }}>
+          <TopBar />
+        </Box>
 
         {/* Hero slider */}
         <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
@@ -55,9 +57,9 @@ const HomePage = () => {
                 sx={{
                   width: "100%",
                   height: {
-                    xs: "700px", // Mobile
-                    sm: "700px", // Small tablets
-                    md: "900px", // Desktop
+                    xs: "400px", // Mobile
+                    sm: "500px", // Small tablets
+                    md: "700px", // Desktop
                     lg: "900px", // Large screens
                   },
                   objectFit: "cover",
@@ -67,23 +69,23 @@ const HomePage = () => {
           ))}
         </Swiper>
 
-        {/* Header + HeroSection overlay */}
+        {/* Header + HeroSection overlay above Swiper */}
         <Box
           sx={{
             position: "absolute",
-            top: 0,
+            top: 30,
             left: 0,
             width: "100%",
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            pointerEvents: "none",
+            zIndex: 10, // above Swiper
           }}
         >
-          <Box sx={{ pointerEvents: "auto" }}>
+          <Box>
             <Header />
           </Box>
-          <Box sx={{ pointerEvents: "auto" }}>
+          <Box>
             <HeroSection />
           </Box>
         </Box>
