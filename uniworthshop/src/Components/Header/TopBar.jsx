@@ -1,76 +1,95 @@
-import React, { useState } from "react";
+import React from "react";
+import { Box, Grid, Typography, Link, Divider } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import { Link, Typography, Divider, Box, Grid } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
-const TopBar = () => {
-  const [currency, setCurrency] = useState("PKR");
-
-  const handleChange = (event) => {
-    setCurrency(event.target.value);
-  };
-
+const TopHeader = () => {
   return (
     <>
-      <Box sx={{ backgroundColor: "#eceff2", px: { xs: 2, md: 5 }, py: 2 }}>
-        <Grid container alignItems="center" spacing={2}>
-          {/* Call Info (hidden on mobile) */}
-          <Grid 
-            item 
-            xs={12} 
-            md={4} 
-            sx={{ display: { xs: "none", md: "block" } }}
+      <Box
+        sx={{
+          backgroundColor: "#eceff2",
+          px: { xs: 2, md: 5 },
+          py: 1,
+        }}
+      >
+        <Grid container alignItems="center">
+          {/* Left Section (Call info) - Hidden on Mobile */}
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: 2,
+            }}
           >
-            <Grid container spacing={2} alignItems="center">
-              <Grid item>
-                <CallIcon sx={{ fontSize: 21 }} />
-              </Grid>
-              <Grid item>
-                <Typography sx={{ fontSize: 16 }}>+92 42 111 789 456</Typography>
-              </Grid>
-              <Grid item>
-                <WhatsAppIcon sx={{ fontSize: 21 }} />
-              </Grid>
-              <Grid item>
-                <Typography sx={{ fontSize: 16 }}>+92-345-4037778</Typography>
-              </Grid>
-            </Grid>
+            <CallIcon sx={{ fontSize: 20, color: "black" }} />
+            <Typography sx={{ fontSize: 14 }}>+92 42 111 789 456</Typography>
+            <WhatsAppIcon sx={{ fontSize: 20, color: "black" }} />
+            <Typography sx={{ fontSize: 14 }}>+92-345-4037778</Typography>
           </Grid>
 
-          {/* Shipping Info (only visible on mobile) */}
-          <Grid 
-            item 
-            xs={12} 
-            md={4} 
-            textAlign="center"
-            sx={{ display: { xs: "block", md: "none" } }}
+          {/* Center Section (Free Shipping) - Always visible */}
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+            }}
           >
-            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                color: "black",
+                display: { xs: "flex", md: "flex" },
+                justifyContent: "center",
+              }}
+            >
               Free Shipping Available Over Rs. 1500/- Order.
             </Typography>
           </Grid>
 
-          {/* My Account (hidden on mobile) */}
-          <Grid 
-            item 
-            xs={12} 
-            md={4} 
-            textAlign="right"
-            sx={{ display: { xs: "none", md: "flex" }, justifyContent: "flex-end" }}
+          {/* Right Section (My Account) - Hidden on Mobile */}
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: 1,
+            }}
           >
-            <Link sx={{ display: "inline-flex", alignItems: "center", gap: 1, textDecoration: "none", color: "black" }}>
+            <Link
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 1,
+                textDecoration: "none",
+                color: "black",
+              }}
+              href="#"
+            >
               <PersonOutlineIcon />
-              <Typography sx={{ fontSize: 16 }}>My Account</Typography>
+              <Typography sx={{ fontSize: 14 }}>My Account</Typography>
             </Link>
           </Grid>
         </Grid>
       </Box>
 
-      {/* Divider */}
       <Divider sx={{ borderColor: "#e0e0e0" }} />
     </>
   );
 };
 
-export default TopBar;
+export default TopHeader;
