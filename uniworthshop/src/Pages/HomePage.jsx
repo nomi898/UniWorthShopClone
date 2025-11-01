@@ -37,6 +37,7 @@ import hero6mobile from "../assets/Images/hero6mobile.jpg";
 import NewArrivalsGrid from "../Components/Sections/NewArrivalsGrid";
 import AccessoriesSection from "../Components/Sections/AccessoriesSection";
 import RatioPotrait from "../Components/Sections/RatioPotrait";
+import Footer from "../Components/Footer/Footer";
 
 const HomePage = () => {
   const theme = useTheme();
@@ -53,9 +54,9 @@ const HomePage = () => {
   ];
 
   return (
-    <Box>
+    <Box sx={{ overflowX: "hidden", width: "100%" }}> {/* Added overflow fix */}
       {/* Hero section */}
-      <Box sx={{ position: "relative", width: "100%" }}>
+      <Box sx={{ position: "relative", width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
         {/* Top bar above Swiper */}
         <Box sx={{ position: "relative", zIndex: 20 }}>
           <TopBar />
@@ -78,6 +79,7 @@ const HomePage = () => {
                     lg: "900px", // Large screens
                   },
                   objectFit: "cover",
+                  display: "block", // Prevents inline image spacing issues
                 }}
               />
             </SwiperSlide>
@@ -107,45 +109,49 @@ const HomePage = () => {
       </Box>
 
       {/* Category Grid */}
-      <Box>
+      <Box sx={{ width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
         <CategoryGrid />
       </Box>
+      
       {/* NewArrivalsGrid  */}
-      <Box>
+      <Box sx={{ width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
         <Typography
           sx={{
             fontSize: {
-              xs: "18px", // for small screens (mobile)
-              sm: "20px", // for slightly larger (small tablets)
-              md: "24px", // for medium (tablets)
-              lg: "28px", // for large (desktop)
-              xl: "32px", // for extra large screens
+              xs: "18px",
+              sm: "20px",
+              md: "24px",
+              lg: "28px",
+              xl: "32px",
             },
           }}
         >
-          <h2 style={{ textAlign: "center", margin: "", fontWeight: "normal" }}>
+          <h2 style={{ textAlign: "center", margin: "0", fontWeight: "normal" }}>
             New Arrivals
           </h2>
           <Divider
             sx={{
-              width: 70, // short red line
-              height: 4, // thickness
+              width: 70,
+              height: 4,
               backgroundColor: "red",
-              borderRadius: 2, // rounded edges
-              mx: "auto", // center horizontally
+              borderRadius: 2,
+              mx: "auto",
             }}
           />
         </Typography>
         <NewArrivalsGrid />
         <AccessoriesSection />
         <ExclusiveProducts />
+        
         {/* SHIPPING PAYMENT QUALITY */}
         <Box
           sx={{
             borderTop: "1px solid #e0e0e0",
             borderBottom: "1px solid #e0e0e0",
             py: 4,
-            px: { xs: 1, sm: 3, md: 6 },
+            px: { xs: 2, sm: 3, md: 6 }, // Changed xs from 1 to 2 for better mobile spacing
+            width: "100%",
+            boxSizing: "border-box", // Ensures padding is included in width
           }}
         >
           <Grid
@@ -153,7 +159,7 @@ const HomePage = () => {
             spacing={0}
             sx={{
               display: "flex",
-              flexWrap: "nowrap",
+              flexWrap: { xs: "wrap", sm: "nowrap" }, // Allow wrap on mobile
               justifyContent: "space-between",
             }}
           >
@@ -161,7 +167,7 @@ const HomePage = () => {
               {
                 icon: (
                   <LocalShippingOutlinedIcon
-                    sx={{ fontSize: 48, color: "#D4A574" }}
+                    sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
                   />
                 ),
                 text: "Free Shipping",
@@ -169,7 +175,7 @@ const HomePage = () => {
               {
                 icon: (
                   <VerifiedUserOutlinedIcon
-                    sx={{ fontSize: 48, color: "#D4A574" }}
+                    sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
                   />
                 ),
                 text: "Secure Payments",
@@ -177,7 +183,7 @@ const HomePage = () => {
               {
                 icon: (
                   <EmojiEventsOutlinedIcon
-                    sx={{ fontSize: 48, color: "#D4A574" }}
+                    sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
                   />
                 ),
                 text: "Premium Quality",
@@ -187,13 +193,14 @@ const HomePage = () => {
                 item
                 key={index}
                 sx={{
-                  width: "33.33%",
+                  width: { xs: "100%", sm: "33.33%" }, // Full width on mobile
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  flexDirection: "column",
+                  flexDirection: { xs: "row", sm: "column" }, // Row on mobile, column on desktop
                   textAlign: "center",
                   gap: 1.5,
+                  mb: { xs: 2, sm: 0 }, // Add margin bottom on mobile
                 }}
               >
                 {item.icon}
@@ -211,11 +218,13 @@ const HomePage = () => {
             ))}
           </Grid>
         </Box>
+        
         {/* categories at the end  */}
-        <Box>
-          <RatioPotrait/>
+        <Box sx={{ width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
+          <RatioPotrait />
         </Box>
       </Box>
+      <Footer />
     </Box>
   );
 };

@@ -19,9 +19,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Box sx={{ width: "100%", position: "fixed", top: 0, zIndex: 30 }}>
-      {/* Optional TopBar */}
-      <TopBar />
+    <Box sx={{ position: "fixed", top: scrolled ? "0px" : "50px", left: 0, right: 0, zIndex: 1000, width: "100%", transition: "top 0.3s ease" }}>
 
       <Box
         sx={{
@@ -31,6 +29,7 @@ const Header = () => {
           padding: scrolled ? "10px 20px" : "20px",
           backgroundColor: scrolled ? "white" : "transparent",
           transition: "all 0.3s ease",
+          overflowX: "hidden",
         }}
       >
         {/* menu icon & text */}

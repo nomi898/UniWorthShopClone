@@ -6,11 +6,7 @@ const StickyHeaderWrapper = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -24,10 +20,12 @@ const StickyHeaderWrapper = () => {
         left: 0,
         width: "100%",
         zIndex: 100,
+        boxSizing: "border-box", // important to include padding in width
         backgroundColor: scrolled ? "#ffffff" : "transparent",
         transition: "background-color 0.3s ease, padding 0.3s ease",
         padding: scrolled ? "10px 20px" : "20px 20px",
         boxShadow: scrolled ? "0 2px 6px rgba(0,0,0,0.1)" : "none",
+        overflowX: "hidden", // prevents horizontal scroll
       }}
     >
       <Header scrolled={scrolled} />

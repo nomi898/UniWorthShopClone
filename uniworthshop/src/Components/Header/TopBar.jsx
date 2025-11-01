@@ -15,6 +15,8 @@ const TopHeader = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          width: "100%",
+          overflowX: "hidden",
         }}
       >
         {/* Left Section (Call info) */}
