@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab, Typography, Divider } from "@mui/material";
 import products from "../../DummyData/Products";
+import { NavLink } from "react-router";
 
 const ExclusiveProducts = () => {
   const [activeTab, setActiveTab] = useState("Shirts");
@@ -69,45 +70,48 @@ const ExclusiveProducts = () => {
       >
         {allProducts.length > 0 ? (
           allProducts.map((item) => (
-            <Box
+            <NavLink
               key={item.id}
-              sx={{
-                flex: {
-                  xs: "1 1 calc(50% - 50px)",  // 2 per row on mobile
-                  sm: "1 1 calc(33.33% - 16px)" // 3 per row on tablet/desktop
-                },
-                maxWidth: {
-                  xs: "100%", // allow full width on small screens
-                  sm: "700px" // limit width on larger screens
-                },
-                borderRadius: 2,
-                overflow: "hidden",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                textAlign: "center",
-                backgroundColor: "#fff",
-                transition: "transform 0.3s ease",
-                "&:hover": { transform: "scale(1.03)" },
+              to={`/product/${item.id}`}
+              style={{ 
+                textDecoration: "none", 
+                color: "inherit",
+                flex: "1 1 calc(33.33% - 16px)", // add this!
+                maxWidth: "700px" // optional: match Box maxWidth
               }}
             >
               <Box
-                component="img"
-                src={item.image}
-                alt={item.name}
+                key={item.id}
                 sx={{
-                  width: "100%",
-                  aspectRatio: "4/5",
-                  objectFit: "cover",
+                  borderRadius: 2,
+                  overflow: "hidden",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                  textAlign: "center",
+                  backgroundColor: "#fff",
+                  transition: "transform 0.3s ease",
+                  "&:hover": { transform: "scale(1.03)" },
                 }}
-              />
-              <Box sx={{ p: 2 }}>
-                <Typography sx={{ fontWeight: 500, mb: 1 }}>
-                  {item.name}
-                </Typography>
-                <Typography color="text.secondary">
-                  Rs.{item.price.toLocaleString()}
-                </Typography>
+              >
+                <Box
+                  component="img"
+                  src={item.image}
+                  alt={item.name}
+                  sx={{
+                    width: "100%",
+                    aspectRatio: "4/5",
+                    objectFit: "cover",
+                  }}
+                />
+                <Box sx={{ p: 2 }}>
+                  <Typography sx={{ fontWeight: 500, mb: 1 }}>
+                    {item.name}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Rs.{item.price.toLocaleString()}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
+            </NavLink>
           ))
         ) : (
           <Typography

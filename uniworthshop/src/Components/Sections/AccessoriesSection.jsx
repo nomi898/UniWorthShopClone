@@ -2,8 +2,11 @@ import AcessBaner from "../../assets/Images/AcessBaner.webp";
 import AcessBanermobile from "../../assets/Images/AcessBanermobile.webp";
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
+import { NavLink } from "react-router";
+import Categories from '../../DummyData/Categories';
 
 const AccessoriesSection = () => {
+  const category = Categories.find((c) => c.name === "ACCESSORIES");
   return (
     <Box
       sx={{
@@ -79,8 +82,11 @@ const AccessoriesSection = () => {
           Essential Collection Curates A Range Of Accessory Must-Haves
           Catering To Every Occasion.
         </Typography>
-
-        <Button
+        <NavLink
+          to={`/category/${encodeURIComponent(category.name)}`}
+          style={{ textDecoration: "none" }}
+        >
+                  <Button
           variant="outlined"
           sx={{
             borderColor: "#1a1a1a",
@@ -98,6 +104,8 @@ const AccessoriesSection = () => {
         >
           Shop
         </Button>
+        </NavLink>
+
       </Box>
     </Box>
   );
