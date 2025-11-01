@@ -1,15 +1,14 @@
 import React from "react";
-import Header from "../Header/Header";
+import Header from "./Header";
 import { Outlet } from "react-router";
-import image from '../../assets/Images/MustardPlainHalfZipperSweater.webp';
-import Footer from "../Footer/Footer";
+import Footer from "./Footer";
 
 const Layout = () => {
   return (
     <>
-      <Header />   {/* Always visible on every page */}
+      <Header /> {/* Always visible on every page */}
       <Outlet /> {/* Dynamic area that changes based on route */}
-      <Footer />  {/* Always visible on every page */}
+      <Footer /> {/* Always visible on every page */}
     </>
   );
 };

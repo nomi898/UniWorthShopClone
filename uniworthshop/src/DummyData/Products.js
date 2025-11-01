@@ -11,11 +11,25 @@ import Pajama1 from "../assets/Images/Products/pajama1.jpg";
 import BlackPajamaSet from "../assets/Images/Products/BlackPlainT-shirtPajamaSetWoven.jpg";
 import NavyBelt from "../assets/Images/Products/NavyPlainFormalBelt.jpg";
 import LinenShirt from "../assets/Images/Products/leninShirt.jpg";
+import BeigeColorBlockZipperHoodie from "../assets/Images/Products/BeigeColorBlockZipperHoodie.jpg";
 
 const products = [
   {
     name: "WINTER COLLECTION",
     subcategories: [
+      { name: "Hoodies",
+        products: [
+          {
+          id: 100,
+          name: "Beige Color Block Zipper Hoodie",
+          price: 7495,
+          image: BeigeColorBlockZipperHoodie,
+          isSale: false,
+          isNewArrival: true,
+          },  
+        ]
+      },
+      
       {
         name: "Sweaters",
         products: [

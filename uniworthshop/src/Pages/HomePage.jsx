@@ -1,6 +1,5 @@
 import React from "react";
-import Header from "../Components/Header/Header";
-import HeroSection from "../Components/HeroSection/HeroSection";
+import Header from "../Components/Layout/Header";
 import {
   Box,
   Divider,
@@ -9,17 +8,23 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import TopBar from "../Components/Header/TopBar";
+import TopBar from "../Components/HeroSection/TopBar";
 import "swiper/css";
 import "swiper/css/navigation";
+import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import CategoryGrid from "../Components/HeroSection/HeroGrid";
+import CategoryGrid from "../Components/HeroSection/CategoryGrid";
 import ExclusiveProducts from "../Components/Sections/exclusiveProducts";
 import "../App.css";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
+import { NavLink } from "react-router";
+import NewArrivalsGrid from "../Components/Sections/NewArrivalsGrid";
+import AccessoriesSection from "../Components/Sections/AccessoriesSection";
+import RatioPotrait from "../Components/Sections/RatioPotrait";
+import Footer from "../Components/Layout/Footer";
 
 // Desktop & Mobile hero images
 import HeroSectionImage from "../assets/Images/herosectionimage.jpg";
@@ -34,12 +39,18 @@ import hero5 from "../assets/Images/hero5.jpg";
 import hero5mobile from "../assets/Images/hero5mobile.jpg";
 import hero6 from "../assets/Images/hero6.jpg";
 import hero6mobile from "../assets/Images/hero6mobile.jpg";
-import NewArrivalsGrid from "../Components/Sections/NewArrivalsGrid";
-import AccessoriesSection from "../Components/Sections/AccessoriesSection";
-import RatioPotrait from "../Components/Sections/RatioPotrait";
-import Footer from "../Components/Footer/Footer";
+
 
 const HomePage = () => {
+  // hero section category links
+  const heroLinks = [
+    { category: "WINTER COLLECTION", subcategory: "Hoodies" },
+    { category: "SHIRTS", subcategory: "Formal Shirts" },
+    { category: "TROUSERS", subcategory: "Formal" },
+    { category: "SUITING", subcategory: "Two Piece Suits" },
+    { category: "ETHNIC WEAR", subcategory: "Kurta Pajama" },
+    { category: "ACTIVE WEAR", subcategory: "Tracksuits" },
+  ];
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -54,38 +65,53 @@ const HomePage = () => {
   ];
 
   return (
-    <Box sx={{ overflowX: "hidden", width: "100%" }}> {/* Added overflow fix */}
+    <Box sx={{ overflowX: "hidden", width: "100%" }}>
       {/* Hero section */}
-      <Box sx={{ position: "relative", width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
+      <Box sx={{ position: "relative", width: "100%", overflowX: "hidden" }}>
         {/* Top bar above Swiper */}
         <Box sx={{ position: "relative", zIndex: 20 }}>
           <TopBar />
         </Box>
-
         {/* Hero slider */}
-        <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-          {heroImages.map((img, index) => (
-            <SwiperSlide key={index}>
-              <Box
-                component="img"
-                src={img}
-                alt={`Hero Background ${index + 1}`}
-                sx={{
-                  width: "100%",
-                  height: {
-                    xs: "800px", // Mobile
-                    sm: "500px", // Small tablets
-                    md: "700px", // Desktop
-                    lg: "900px", // Large screens
-                  },
-                  objectFit: "cover",
-                  display: "block", // Prevents inline image spacing issues
-                }}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <Box sx={{ position: "relative", width: "100%", overflow: "hidden" }}>
+          <Swiper
+            modules={[Navigation,
+               Pagination, Autoplay
+              ]}
+            navigation={true}
+            pagination={{ clickable: true }}
+            // autoplay={{ delay: 3000, disableOnInteraction: false }}
+            loop={true}
+            slidesPerView={1}
+            spaceBetween={0}
+            simulateTouch={true}
+            grabCursor={true}
+            style={{ width: "100%", height: "100%" }}
+          >
+            {heroImages.map((img, index) => (
 
+<SwiperSlide key={index}>
+  <NavLink
+  to={`/category/${encodeURIComponent(heroLinks[index].category)}?subcategory=${encodeURIComponent(heroLinks[index].subcategory)}`}
+     style={{ display: "block", width: "100%", height: "100%" }}
+  >
+    <Box
+      component="img"
+      src={img}
+      alt={`Hero Background ${index + 1}`}
+      sx={{
+        width: "100%",
+        height: { xs: "300px", sm: "500px", md: "700px", lg: "900px" },
+        objectFit: "cover",
+        cursor: "pointer",
+      }}
+    />
+  </NavLink>
+</SwiperSlide>
+
+            ))}
+          </Swiper>
+        </Box>
         {/* Header + HeroSection overlay above Swiper */}
         <Box
           sx={{
@@ -97,24 +123,17 @@ const HomePage = () => {
             display: "flex",
             flexDirection: "column",
             zIndex: 10, // above Swiper
+            pointerEvents: "none",
           }}
         >
-          <Box>
-            <Header />
-          </Box>
-          <Box>
-            <HeroSection />
-          </Box>
         </Box>
       </Box>
-
       {/* Category Grid */}
-      <Box sx={{ width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
+      <Box sx={{ width: "100%", overflowX: "hidden" }}>
         <CategoryGrid />
       </Box>
-      
       {/* NewArrivalsGrid  */}
-      <Box sx={{ width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
+      <Box sx={{ width: "100%", overflowX: "hidden" }}>
         <Typography
           sx={{
             fontSize: {
@@ -126,7 +145,9 @@ const HomePage = () => {
             },
           }}
         >
-          <h2 style={{ textAlign: "center", margin: "0", fontWeight: "normal" }}>
+          <h2
+            style={{ textAlign: "center", margin: "0", fontWeight: "normal" }}
+          >
             New Arrivals
           </h2>
           <Divider
@@ -140,9 +161,10 @@ const HomePage = () => {
           />
         </Typography>
         <NewArrivalsGrid />
+        </Box>
+
         <AccessoriesSection />
         <ExclusiveProducts />
-        
         {/* SHIPPING PAYMENT QUALITY */}
         <Box
           sx={{
@@ -218,13 +240,14 @@ const HomePage = () => {
             ))}
           </Grid>
         </Box>
-        
         {/* categories at the end  */}
-        <Box sx={{ width: "100%", overflowX: "hidden" }}> {/* Added overflow fix */}
+        <Box sx={{ width: "100%", overflowX: "hidden" }}>
+          {" "}
+          {/* Added overflow fix */}
           <RatioPotrait />
         </Box>
-      </Box>
-      <Footer />
+
+      {/* <Footer /> */}
     </Box>
   );
 };

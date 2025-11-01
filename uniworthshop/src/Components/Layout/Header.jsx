@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import TopBar from "./TopBar";
+import TopBar from "../HeroSection/TopBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, Button, Typography } from "@mui/material";
 import logoColored from "../../assets/Images/logocolored.png"; // colored logo
@@ -19,8 +19,17 @@ const Header = () => {
   }, []);
 
   return (
-    <Box sx={{ position: "fixed", top: scrolled ? "0px" : "50px", left: 0, right: 0, zIndex: 1000, width: "100%", transition: "top 0.3s ease" }}>
-
+    <Box
+      sx={{
+        position: "fixed",
+        top: scrolled ? "0px" : "50px",
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        width: "100%",
+        transition: "top 0.3s ease",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -34,8 +43,12 @@ const Header = () => {
       >
         {/* menu icon & text */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <MenuIcon sx={{ fontSize: 30, color: scrolled ? "black" : "white" }} />
-          <Typography sx={{ color: scrolled ? "black" : "white", fontWeight: 500 }}>
+          <MenuIcon
+            sx={{ fontSize: 30, color: scrolled ? "black" : "white" }}
+          />
+          <Typography
+            sx={{ color: scrolled ? "black" : "white", fontWeight: 500 }}
+          >
             Menu
           </Typography>
         </Box>

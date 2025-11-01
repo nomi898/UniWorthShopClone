@@ -3,8 +3,10 @@ import products from "../../DummyData/Products";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Autoplay,Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import { Box } from "@mui/material";
+import { NavLink } from "react-router";
+import ScrollToTop from "../Layout/ScrollToTop";
 
 const NewArrivalsGrid = () => {
   const newArrivals = products.flatMap((category) =>
@@ -14,12 +16,12 @@ const NewArrivalsGrid = () => {
   );
 
   return (
-    <Box sx={{ marginInline: { xs: 2, sm: 4, md: 8, lg: 30 } }}>
+    <Box sx={{ marginInline: { xs: 2, sm: 4, md: 8, lg: 30 },mb:4 }}>
       <Swiper
         autoplay={{
-            delay: 3000,      // 3 seconds between slides
-            disableOnInteraction: false, // keeps autoplay even after user interacts
-          }}
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
         slidesPerView={3}
         spaceBetween={10}
         pagination={{ clickable: true }}
@@ -33,23 +35,32 @@ const NewArrivalsGrid = () => {
       >
         {newArrivals.map((product) => (
           <SwiperSlide key={product.id}>
-            <Box>
-              <Box
-                component="img"
-                src={product.image}
-                alt={product.name}
-                sx={{
-                  width: "100%",
-                  height: "auto",
-                  aspectRatio: "3/4",
-                  objectFit: "cover",
-                  mb: 2,
-                  borderRadius: 1,
-                }}
-              />
-              <p className="">{product.name}</p>
-              <h5 className="text-black-400">PKR {product.price}</h5>
-            </Box>
+            <NavLink
+              to={`/product/${product.id}`} // Navigate to ProductDetail
+              style={{
+                textDecoration: "none",
+
+                color: "inherit",
+              }}
+            >
+              <Box>
+                <Box
+                  component="img"
+                  src={product.image}
+                  alt={product.name}
+                  sx={{
+                    width: "100%",
+                    height: "auto",
+                    aspectRatio: "3/4",
+                    objectFit: "cover",
+                    mb: 2,
+                    borderRadius: 1,
+                  }}
+                />
+                <p>{product.name}</p>
+                <h5 className="text-black-400">PKR {product.price}</h5>
+              </Box>
+            </NavLink>
           </SwiperSlide>
         ))}
       </Swiper>
