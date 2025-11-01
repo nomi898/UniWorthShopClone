@@ -1,13 +1,25 @@
 import React from "react";
 import Header from "../Components/Header/Header";
 import HeroSection from "../Components/HeroSection/HeroSection";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import TopBar from "../Components/Header/TopBar";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import CategoryGrid from "../Components/HeroSection/HeroGrid";
+import ExclusiveProducts from "../Components/Sections/exclusiveProducts";
+import "../App.css";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
+import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
+import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 
 // Desktop & Mobile hero images
 import HeroSectionImage from "../assets/Images/herosectionimage.jpg";
@@ -22,6 +34,9 @@ import hero5 from "../assets/Images/hero5.jpg";
 import hero5mobile from "../assets/Images/hero5mobile.jpg";
 import hero6 from "../assets/Images/hero6.jpg";
 import hero6mobile from "../assets/Images/hero6mobile.jpg";
+import NewArrivalsGrid from "../Components/Sections/NewArrivalsGrid";
+import AccessoriesSection from "../Components/Sections/AccessoriesSection";
+import RatioPotrait from "../Components/Sections/RatioPotrait";
 
 const HomePage = () => {
   const theme = useTheme();
@@ -48,16 +63,16 @@ const HomePage = () => {
 
         {/* Hero slider */}
         <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-          {heroImages.map((img, idx) => (
-            <SwiperSlide key={idx}>
+          {heroImages.map((img, index) => (
+            <SwiperSlide key={index}>
               <Box
                 component="img"
                 src={img}
-                alt={`Hero Background ${idx + 1}`}
+                alt={`Hero Background ${index + 1}`}
                 sx={{
                   width: "100%",
                   height: {
-                    xs: "400px", // Mobile
+                    xs: "800px", // Mobile
                     sm: "500px", // Small tablets
                     md: "700px", // Desktop
                     lg: "900px", // Large screens
@@ -92,8 +107,114 @@ const HomePage = () => {
       </Box>
 
       {/* Category Grid */}
-      <Box sx={{ mt: 4 }}>
+      <Box>
         <CategoryGrid />
+      </Box>
+      {/* NewArrivalsGrid  */}
+      <Box>
+        <Typography
+          sx={{
+            fontSize: {
+              xs: "18px", // for small screens (mobile)
+              sm: "20px", // for slightly larger (small tablets)
+              md: "24px", // for medium (tablets)
+              lg: "28px", // for large (desktop)
+              xl: "32px", // for extra large screens
+            },
+          }}
+        >
+          <h2 style={{ textAlign: "center", margin: "", fontWeight: "normal" }}>
+            New Arrivals
+          </h2>
+          <Divider
+            sx={{
+              width: 70, // short red line
+              height: 4, // thickness
+              backgroundColor: "red",
+              borderRadius: 2, // rounded edges
+              mx: "auto", // center horizontally
+            }}
+          />
+        </Typography>
+        <NewArrivalsGrid />
+        <AccessoriesSection />
+        <ExclusiveProducts />
+        {/* SHIPPING PAYMENT QUALITY */}
+        <Box
+          sx={{
+            borderTop: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            py: 4,
+            px: { xs: 1, sm: 3, md: 6 },
+          }}
+        >
+          <Grid
+            container
+            spacing={0}
+            sx={{
+              display: "flex",
+              flexWrap: "nowrap",
+              justifyContent: "space-between",
+            }}
+          >
+            {[
+              {
+                icon: (
+                  <LocalShippingOutlinedIcon
+                    sx={{ fontSize: 48, color: "#D4A574" }}
+                  />
+                ),
+                text: "Free Shipping",
+              },
+              {
+                icon: (
+                  <VerifiedUserOutlinedIcon
+                    sx={{ fontSize: 48, color: "#D4A574" }}
+                  />
+                ),
+                text: "Secure Payments",
+              },
+              {
+                icon: (
+                  <EmojiEventsOutlinedIcon
+                    sx={{ fontSize: 48, color: "#D4A574" }}
+                  />
+                ),
+                text: "Premium Quality",
+              },
+            ].map((item, index) => (
+              <Grid
+                item
+                key={index}
+                sx={{
+                  width: "33.33%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  textAlign: "center",
+                  gap: 1.5,
+                }}
+              >
+                {item.icon}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 500,
+                    color: "#333",
+                    fontSize: { xs: "0.9rem", sm: "1rem" },
+                  }}
+                >
+                  {item.text}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {/* categories at the end  */}
+        <Box>
+          <RatioPotrait/>
+        </Box>
       </Box>
     </Box>
   );
