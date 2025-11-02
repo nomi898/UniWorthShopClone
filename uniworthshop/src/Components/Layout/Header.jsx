@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from "react";
-import TopBar from "../HeroSection/TopBar";
+import { useLocation, NavLink } from "react-router";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, Button, Typography } from "@mui/material";
-import logoColored from "../../assets/Images/logocolored.png"; // colored logo
-import logoWhite from "../../assets/Images/logo.svg"; // white logo
+import logoColored from "../../assets/Images/logocolored.png";
+import logoWhite from "../../assets/Images/logo.svg";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
+    if (!isHomePage) {
+      // Non-home pages: always scrolled
+      setScrolled(true);
+      return;
+    }
+
+    // Homepage: change on scroll
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   return (
     <Box
@@ -53,17 +64,19 @@ const Header = () => {
           </Typography>
         </Box>
 
-        {/* logo */}
+        {/* logo wrapped in NavLink */}
         <Box>
-          <img
-            src={scrolled ? logoColored : logoWhite} // switch based on scroll
-            alt="Logo"
-            style={{
-              width: scrolled ? 50 : 150, // smaller on scroll
-              height: "auto",
-              transition: "all 0.3s ease",
-            }}
-          />
+          <NavLink to="/">
+            <img
+              src={scrolled ? logoColored : logoWhite}
+              alt="Logo"
+              style={{
+                width: scrolled ? 50 : 150,
+                height: "auto",
+                transition: "all 0.3s ease",
+              }}
+            />
+          </NavLink>
         </Box>
 
         {/* search & cart */}
@@ -76,7 +89,9 @@ const Header = () => {
               borderRadius: 1,
               textTransform: "none",
               "&:hover": {
-                backgroundColor: scrolled ? "#f2f2f2" : "rgba(255,255,255,0.1)",
+                backgroundColor: scrolled
+                  ? "#f2f2f2"
+                  : "rgba(255,255,255,0.1)",
               },
             }}
             startIcon={<SearchIcon />}
@@ -92,7 +107,9 @@ const Header = () => {
               borderRadius: 1,
               textTransform: "none",
               "&:hover": {
-                backgroundColor: scrolled ? "#f2f2f2" : "rgba(255,255,255,0.1)",
+                backgroundColor: scrolled
+                  ? "#f2f2f2"
+                  : "rgba(255,255,255,0.1)",
               },
             }}
             startIcon={<AddShoppingCartIcon />}
