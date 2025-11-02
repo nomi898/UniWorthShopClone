@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Button, Grid } from '@mui/material';
 import { NavLink, useParams } from 'react-router';
 import products from '../DummyData/Products';
 
 const ProductDetail = () => {
   const { productId } = useParams();
+  const [selectedSize, setSelectedSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [showProductDetail, setShowProductDetail] = useState(true);
+  const [showShipping, setShowShipping] = useState(false);
 
   // Find product, subcategory, and category dynamically by productId
   let product, subcategoryData, categoryData;
@@ -25,6 +29,22 @@ const ProductDetail = () => {
   const categoryLabel = categoryData?.name;
   const subcategoryLabel = subcategoryData?.name;
   const productLabel = product?.name;
+
+  const handleQuantityDecrease = () => {
+    if (quantity > 1) setQuantity(quantity - 1);
+  };
+
+  const handleQuantityIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert('Please select a size');
+      return;
+    }
+    console.log('Added to cart:', { product, size: selectedSize, quantity });
+  };
 
   return (
     <Box sx={{ pt: '150px', pb: '50px', px: { xs: 2, md: 4 } }}>
@@ -66,9 +86,11 @@ const ProductDetail = () => {
         )}
       </Box>
 
-      {/* Product Content */}
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
+      {/* 3 Column Horizontal Layout */}
+      <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' }, maxWidth: '100%', overflow: 'hidden' }}>
+        
+        {/* Column 1: Product Image */}
+        <Box sx={{ flex: { xs: '1', md: '0 0 30%' }, minWidth: 0 }}>
           <Box sx={{ mb: 2 }}>
             <Box
               component="img"
@@ -76,13 +98,13 @@ const ProductDetail = () => {
               alt={productLabel || 'Product'}
               sx={{ width: '100%', borderRadius: '8px', cursor: 'pointer' }}
             />
-            <Typography variant="caption" sx={{ textAlign: 'center', display: 'block', mt: 1 }}>
+            <Typography variant="caption" sx={{ textAlign: 'center', display: 'block', mt: 1, color: 'text.secondary' }}>
               Tap or pinch to expand
             </Typography>
           </Box>
 
           {/* Thumbnail Images */}
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
             {[1, 2, 3, 4, 5].map((item) => (
               <Box
                 key={item}
@@ -90,8 +112,8 @@ const ProductDetail = () => {
                 src={`/images/product-thumb-${item}.jpg`}
                 alt={`Thumbnail ${item}`}
                 sx={{
-                  width: '80px',
-                  height: '80px',
+                  width: '60px',
+                  height: '60px',
                   borderRadius: '4px',
                   cursor: 'pointer',
                   border: '2px solid transparent',
@@ -100,33 +122,230 @@ const ProductDetail = () => {
               />
             ))}
           </Box>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} md={6}>
-          <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
-            {productLabel || 'Product Name'}
+        {/* Column 2: Product Details */}
+        <Box sx={{ flex: { xs: '1', md: '0 0 38%' }, minWidth: 0 }}>
+          {/* Product Detail Tab */}
+          <Box sx={{ border: '1px solid #ddd', borderRadius: '4px', mb: 2 }}>
+            <Box 
+              sx={{ 
+                backgroundColor: '#f5f5f5', 
+                p: 1.5, 
+                fontWeight: 600, 
+                cursor: 'pointer',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontSize: '14px'
+              }}
+              onClick={() => setShowProductDetail(!showProductDetail)}
+            >
+              <Typography sx={{ fontWeight: 600, fontSize: '14px' }}>PRODUCT DETAIL</Typography>
+              <Typography>{showProductDetail ? '−' : '+'}</Typography>
+            </Box>
+          </Box>
+
+          <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+            {productLabel || 'Beige Color Block Zipper Hoodie'}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            SKU: {product?.sku || 'FS1114SF'}
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            SKU: {product?.sku || 'TH2508'}
           </Typography>
 
-          {/* Social Share */}
+          {/* Social Share Icons */}
           <Box sx={{ display: 'flex', gap: 1, mb: 3 }}>
-            {['Facebook', 'Twitter', 'Pinterest', 'Email'].map((social) => (
-              <Button key={social} size="small" sx={{ minWidth: 'auto', px: 1, color: 'text.secondary' }}>
-                {social}
+            {['f', 't', 'p', '@'].map((icon, idx) => (
+              <Box
+                key={idx}
+                sx={{
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '50%',
+                  border: '1px solid #ddd',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  '&:hover': { borderColor: '#D4A574' }
+                }}
+              >
+                <Typography variant="caption">{icon}</Typography>
+              </Box>
+            ))}
+          </Box>
+
+          {/* Product Description */}
+          <Typography variant="body2" sx={{ mb: 2, lineHeight: 1.6, fontSize: '13px', color: 'text.secondary' }}>
+            {product?.description || 
+              "Designed for both comfort and practicality, this full-zip beige hoodie is a versatile addition to your smart casual wardrobe. Featuring a soft and durable cotton polyester blend with a regular fit, it offers warmth and flexibility for any occasion. The adjustable drawstring hood and ribbed cuffs ensure a snug fit, while the full zip allows for easy layering. This zipper hoodie is perfect for casual wear or outdoor activities."}
+          </Typography>
+
+          {/* Product Specifications */}
+          <Box sx={{ mb: 3 }}>
+            {[
+              { label: 'Collar Style', value: product?.collarStyle || 'Hoodie' },
+              { label: 'Color', value: product?.color || 'Beige' },
+              { label: 'Cuff Style', value: product?.cuffStyle || 'Rib' },
+              { label: 'Fabric', value: product?.fabric || '80% Cotton 20% Polyester' },
+              { label: 'Fit', value: product?.fit || 'Regular Fit' },
+              { label: 'Pattern', value: product?.pattern || 'Plain' },
+              { label: 'Sleeve', value: product?.sleeve || 'Full Sleeves' },
+              { label: 'Style', value: product?.style || 'Full Zipper' }
+            ].map((spec, idx) => (
+              <Box key={idx} sx={{ display: 'flex', mb: 0.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '13px', minWidth: '120px' }}>
+                  {spec.label} :
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '13px', color: 'text.secondary' }}>
+                  {spec.value}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+
+          {/* Shipping & Returns Tab */}
+          <Box sx={{ border: '1px solid #ddd', borderRadius: '4px' }}>
+            <Box 
+              sx={{ 
+                backgroundColor: '#f5f5f5', 
+                p: 1.5, 
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontSize: '14px'
+              }}
+              onClick={() => setShowShipping(!showShipping)}
+            >
+              <Typography sx={{ fontWeight: 600, fontSize: '14px' }}>SHIPPING & RETURNS</Typography>
+              <Typography>{showShipping ? '−' : '+'}</Typography>
+            </Box>
+            {showShipping && (
+              <Box sx={{ p: 2 }}>
+                <Typography variant="body2" sx={{ lineHeight: 1.6, fontSize: '13px', color: 'text.secondary' }}>
+                  Free shipping on orders over Rs. 5,000. Standard delivery takes 3-5 business days.
+                  Returns accepted within 14 days of delivery. Items must be unworn and in original packaging.
+                </Typography>
+              </Box>
+            )}
+          </Box>
+        </Box>
+
+        {/* Column 3: Price & Purchase Options */}
+        <Box sx={{ flex: { xs: '1', md: '0 0 28%' }, minWidth: 0 }}>
+          {/* Price */}
+          <Typography variant="h4" sx={{ fontWeight: 600, mb: 3, color: 'text.primary' }}>
+            Rs.{product?.price?.toLocaleString() || '6,495.00'}
+          </Typography>
+
+          {/* Size Chart Link */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+            <Button size="small" sx={{ textTransform: 'none', color: 'text.secondary', fontSize: '12px', p: 0 }}>
+              📏 Size Chart
+            </Button>
+          </Box>
+
+          {/* Size Selection */}
+          <Typography variant="body2" sx={{ mb: 1, fontWeight: 600, fontSize: '13px' }}>
+            Select Size:
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1, mb: 3, flexWrap: 'wrap' }}>
+            {['S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+              <Button
+                key={size}
+                variant="outlined"
+                onClick={() => setSelectedSize(size)}
+                sx={{
+                  minWidth: '45px',
+                  height: '40px',
+                  borderColor: selectedSize === size ? '#D4A574' : '#ddd',
+                  backgroundColor: selectedSize === size ? '#f5f0e8' : 'transparent',
+                  color: 'text.primary',
+                  fontSize: '14px',
+                  '&:hover': { 
+                    borderColor: '#D4A574', 
+                    backgroundColor: '#f5f0e8' 
+                  }
+                }}
+              >
+                {size}
               </Button>
             ))}
           </Box>
 
-          {/* Price */}
-          <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, color: '#D4A574' }}>
-            Rs. {product?.price?.toLocaleString() || '0'}
+          {/* Quantity */}
+          <Typography variant="body2" sx={{ mb: 1, fontWeight: 600, fontSize: '13px' }}>
+            Quantity
           </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
+            <Button 
+              variant="outlined" 
+              size="small" 
+              onClick={handleQuantityDecrease}
+              sx={{ 
+                minWidth: '35px', 
+                height: '35px',
+                borderColor: '#ddd', 
+                color: 'text.primary',
+                p: 0
+              }}
+            >
+              −
+            </Button>
+            <Typography sx={{ minWidth: '40px', textAlign: 'center', fontWeight: 500 }}>
+              {quantity}
+            </Typography>
+            <Button 
+              variant="outlined" 
+              size="small" 
+              onClick={handleQuantityIncrease}
+              sx={{ 
+                minWidth: '35px', 
+                height: '35px',
+                borderColor: '#ddd', 
+                color: 'text.primary',
+                p: 0
+              }}
+            >
+              +
+            </Button>
+          </Box>
 
-          {/* Rest of your ProductDetail code goes here (size, color, fit, add to cart, etc.) */}
-        </Grid>
-      </Grid>
+          {/* Add to Cart Button */}
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleAddToCart}
+            sx={{
+              backgroundColor: '#D4A574',
+              color: 'white',
+              py: 1.5,
+              mb: 3,
+              textTransform: 'none',
+              fontSize: '15px',
+              fontWeight: 600,
+              '&:hover': { backgroundColor: '#C89563' }
+            }}
+          >
+            🛒 ADD TO CART
+          </Button>
+
+          {/* Need Help */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+            <Typography variant="body2" sx={{ fontSize: '13px' }}>
+              📞 Need Help?
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '13px' }}>
+              +92 42 111 789 456
+            </Typography>
+          </Box>
+          <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>
+            Mon-Sat: (10:00 AM to 06:00 PM)
+          </Typography>
+        </Box>
+      </Box>
     </Box>
   );
 };
