@@ -3,6 +3,7 @@ import { Box, Typography, Link, Divider } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { NavLink } from "react-router";
 
 const TopHeader = () => {
   return (
@@ -66,7 +67,12 @@ const TopHeader = () => {
             href="#"
           >
             <PersonOutlineIcon />
-            <Typography sx={{ fontSize: 14 }}>My Account</Typography>
+            <NavLink
+              to="/signin"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography sx={{ fontSize: 14 }}>My Account</Typography>
+            </NavLink>
           </Link>
         </Box>
       </Box>

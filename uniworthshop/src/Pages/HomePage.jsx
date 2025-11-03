@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import TopBar from "../Components/HeroSection/TopBar";
+import TopBar from "../Components/Layout/TopBar";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Pagination } from "swiper/modules";
