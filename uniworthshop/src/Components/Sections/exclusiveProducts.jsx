@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab, Typography, Divider } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Divider, IconButton } from "@mui/material";
+import { ShoppingCart, Search, FavoriteBorder } from "@mui/icons-material";
 import products from "../../DummyData/Products";
 import { NavLink } from "react-router";
 
@@ -8,6 +9,27 @@ const ExclusiveProducts = () => {
 
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
+  };
+
+  const handleAddToCart = (e, productId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Add to cart:', productId);
+    // Add your cart logic here
+  };
+
+  const handleQuickView = (e, productId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Quick view:', productId);
+    // Add your quick view logic here
+  };
+
+  const handleAddToWishlist = (e, productId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Add to wishlist:', productId);
+    // Add your wishlist logic here
   };
 
   const category = products.find(
@@ -76,12 +98,11 @@ const ExclusiveProducts = () => {
               style={{ 
                 textDecoration: "none", 
                 color: "inherit",
-                flex: "1 1 calc(33.33% - 16px)", // add this!
-                maxWidth: "700px" // optional: match Box maxWidth
+                flex: "1 1 calc(33.33% - 16px)",
+                maxWidth: "700px"
               }}
             >
               <Box
-                key={item.id}
                 sx={{
                   borderRadius: 2,
                   overflow: "hidden",
@@ -92,16 +113,85 @@ const ExclusiveProducts = () => {
                   "&:hover": { transform: "scale(1.03)" },
                 }}
               >
+                {/* Image Container with Hover Icons */}
                 <Box
-                  component="img"
-                  src={item.image}
-                  alt={item.name}
                   sx={{
-                    width: "100%",
-                    aspectRatio: "4/5",
-                    objectFit: "cover",
+                    position: "relative",
+                    overflow: "hidden",
+                    "&:hover .hover-overlay": {
+                      opacity: 1,
+                      transform: "translateX(0)",
+                    },
                   }}
-                />
+                >
+                  <Box
+                    component="img"
+                    src={item.image}
+                    alt={item.name}
+                    sx={{
+                      width: "100%",
+                      aspectRatio: "4/5",
+                      objectFit: "cover",
+                    }}
+                  />
+
+                  {/* Hover Overlay with Icons - Vertical on Bottom Right */}
+                  <Box
+                    className="hover-overlay"
+                    sx={{
+                      position: "absolute",
+                      bottom: 16,
+                      right: 0,
+                      transform: "translateX(100%)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1,
+                      opacity: 0,
+                      transition: "all 0.3s ease",
+                      paddingRight: 2,
+                    }}
+                  >
+                    <IconButton
+                      onClick={(e) => handleAddToCart(e, item.id)}
+                      sx={{
+                        backgroundColor: "white",
+                        "&:hover": { backgroundColor: "#f3f4f6" },
+                        boxShadow: 3,
+                        width: 40,
+                        height: 40,
+                      }}
+                    >
+                      <ShoppingCart sx={{ color: "#1f2937", fontSize: 20 }} />
+                    </IconButton>
+
+                    <IconButton
+                      onClick={(e) => handleQuickView(e, item.id)}
+                      sx={{
+                        backgroundColor: "white",
+                        "&:hover": { backgroundColor: "#f3f4f6" },
+                        boxShadow: 3,
+                        width: 40,
+                        height: 40,
+                      }}
+                    >
+                      <Search sx={{ color: "#1f2937", fontSize: 20 }} />
+                    </IconButton>
+
+                    <IconButton
+                      onClick={(e) => handleAddToWishlist(e, item.id)}
+                      sx={{
+                        backgroundColor: "white",
+                        "&:hover": { backgroundColor: "#f3f4f6" },
+                        boxShadow: 3,
+                        width: 40,
+                        height: 40,
+                      }}
+                    >
+                      <FavoriteBorder sx={{ color: "#1f2937", fontSize: 20 }} />
+                    </IconButton>
+                  </Box>
+                </Box>
+
                 <Box sx={{ p: 2 }}>
                   <Typography sx={{ fontWeight: 500, mb: 1 }}>
                     {item.name}

@@ -11,6 +11,9 @@ import { Link, NavLink } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Footer from "../Components/Layout/footer";
+import Header from "../Components/Layout/Header";
+import Topbar from "../Components/Layout/Topbar";
 
 const siginSchema = yup
   .object({
@@ -47,6 +50,8 @@ const Signin = () => {
         pb: 8,
       }}
     >
+      
+      < Header />
       <Container maxWidth="lg">
         {/* Breadcrumb */}
         <Box sx={{ mb: 4, display: "flex", alignItems: "center", gap: 1 }}>
@@ -241,67 +246,8 @@ const Signin = () => {
             </NavLink>
           </Box>
         </Box>
-
-        {/* Newsletter Section */}
-        <Box
-          sx={{
-            mt: 6,
-            backgroundColor: "#fff",
-            p: 4,
-            borderRadius: "8px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 3,
-          }}
-        >
-          <Box>
-            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-              KNOW IT ALL FIRST!
-            </Typography>
-            <Typography sx={{ color: "#666", fontSize: "14px" }}>
-              Never Miss Anything From Uniworth By Signing Up To Our Newsletter.
-            </Typography>
-          </Box>
-
-          <Box
-            sx={{ display: "flex", gap: 0, width: { xs: "100%", md: "auto" } }}
-          >
-            <TextField
-              placeholder="Enter your email"
-              variant="outlined"
-              sx={{
-                width: { xs: "100%", md: "300px" },
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "#f9f9f9",
-                  borderRadius: "0",
-                  "& fieldset": {
-                    borderRight: "none",
-                  },
-                },
-              }}
-            />
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#333",
-                color: "#fff",
-                px: 4,
-                borderRadius: "0",
-                textTransform: "uppercase",
-                fontWeight: 600,
-                "&:hover": {
-                  backgroundColor: "#000",
-                },
-              }}
-            >
-              SUBSCRIBE
-            </Button>
-          </Box>
-        </Box>
       </Container>
+      <Footer />
     </Box>
   );
 };
