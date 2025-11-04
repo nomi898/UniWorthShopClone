@@ -27,7 +27,7 @@ const AccessoriesSection = () => {
         backgroundSize: "cover",
       }}
     >
-      {/* Overlay for better text readability (optional) */}
+      {/* Overlay for better text readability*/}
       <Box
         sx={{
           position: "absolute",

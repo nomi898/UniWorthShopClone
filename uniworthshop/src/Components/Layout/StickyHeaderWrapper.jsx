@@ -20,7 +20,7 @@ const StickyHeaderWrapper = () => {
         left: 0,
         width: "100%",
         zIndex: 100,
-        boxSizing: "border-box", // important to include padding in width
+        boxSizing: "border-box", //  include padding in width
         backgroundColor: scrolled ? "#ffffff" : "transparent",
         transition: "background-color 0.3s ease, padding 0.3s ease",
         padding: scrolled ? "10px 20px" : "20px 20px",

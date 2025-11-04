@@ -6,7 +6,6 @@ const CategoryGrid = () => {
     { id: 1, name: "Shirts" },
     { id: 2, name: "Sweaters" },
     { id: 3, name: "Hoodies" },
-    // ...add more
   ];
 
   return (

@@ -20,7 +20,7 @@ const TopHeader = () => {
           overflowX: "hidden",
         }}
       >
-        {/* Left Section (Call info) */}
+        {/*(Call info) */}
         <Box
           sx={{
             display: { xs: "none", md: "flex" },
@@ -34,11 +34,11 @@ const TopHeader = () => {
           <Typography sx={{ fontSize: 14 }}>+92-345-4037778</Typography>
         </Box>
 
-        {/* Center Section (Free Shipping) */}
+        {/* (Free Shipping) */}
         <Box
           sx={{
             textAlign: "center",
-            flex: 1, // makes it occupy the middle space
+            flex: 1,
             display: "flex",
             justifyContent: "center",
           }}
@@ -48,7 +48,7 @@ const TopHeader = () => {
           </Typography>
         </Box>
 
-        {/* Right Section (My Account) */}
+        {/* (My Account) */}
         <Box
           sx={{
             display: { xs: "none", md: "flex" },

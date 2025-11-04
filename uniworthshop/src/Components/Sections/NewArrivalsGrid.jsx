@@ -27,14 +27,14 @@ const NewArrivalsGrid = () => {
     e.preventDefault();
     e.stopPropagation();
     console.log('Quick view:', productId);
-    // Add your quick view logic here
+    // Add your quick view logic
   };
 
   const handleAddToWishlist = (e, productId) => {
     e.preventDefault();
     e.stopPropagation();
     console.log('Add to wishlist:', productId);
-    // Add your wishlist logic here
+    // Add your wishlist logic
   };
 
   return (

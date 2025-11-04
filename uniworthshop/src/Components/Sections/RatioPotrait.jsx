@@ -8,7 +8,7 @@ const RatioPotrait = () => {
   return (
     <>
 <Box sx={{ py: 6}}>
-  <Grid sx={{margin:2}} container spacing={2} justifyContent="center"> {/* Added justifyContent */}
+  <Grid sx={{margin:2}} container spacing={2} justifyContent="center"> {/*  justifyContent */}
     {/* Made To Measure */}
     <Grid item xs={12} md={4}>
       <Box
@@ -140,13 +140,13 @@ const RatioPotrait = () => {
       <Box
         sx={{
           position: "relative",
-          height: { xs: 500, sm: 320, md: 400, lg: 550, xl: 700 }, // Fixed to match others
+          height: { xs: 500, sm: 320, md: 400, lg: 550, xl: 700 }, 
           overflow: "hidden",
           "&:hover img": {
             transform: "scale(1.05)",
           },
           margin: { xs: '0 auto', md: 0 }, // Center on mobile
-          maxWidth: { xs: '90%', md: '100%' }, // Optional: limit width on mobile
+          maxWidth: { xs: '90%', md: '100%' },
         }}
       >
         <Box
