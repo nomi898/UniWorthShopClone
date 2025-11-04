@@ -84,7 +84,7 @@ const CategoryPage = () => {
 
   return (
     <div>
-      <Header />
+      
 
       <div style={{ paddingTop: "120px", paddingLeft: "20px", paddingRight: "20px" }}>
         {/* Breadcrumb */}

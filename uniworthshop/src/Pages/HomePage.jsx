@@ -68,10 +68,7 @@ const HomePage = () => {
     <Box sx={{ overflowX: "hidden", width: "100%" }}>
       {/* Hero section */}
       <Box sx={{ position: "relative", width: "100%", overflowX: "hidden" }}>
-        {/* Top bar above Swiper */}
-        <Box sx={{ position: "relative", zIndex: 20 }}>
-          <TopBar />
-        </Box>
+        
         {/* Hero slider */}
         <Box sx={{ position: "relative", width: "100%", overflow: "hidden" }}>
           <Swiper
