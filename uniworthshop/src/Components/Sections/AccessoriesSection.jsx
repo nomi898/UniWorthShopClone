@@ -21,7 +21,7 @@ const AccessoriesSection = () => {
             md: `url(${AcessBaner})`,
             lg: `url(${AcessBaner})`,
           },
-        backgroundAttachment: { xs: "scroll", md: "fixed" },
+        backgroundAttachment: "scroll",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",

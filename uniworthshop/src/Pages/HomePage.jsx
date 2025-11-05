@@ -98,7 +98,7 @@ const HomePage = () => {
       alt={`Hero Background ${index + 1}`}
       sx={{
         width: "100%",
-        height: { xs: "300px", sm: "500px", md: "700px", lg: "900px" },
+        height: { xs: "700px", sm: "600px", md: "700px", lg: "900px" },
         objectFit: "cover",
         cursor: "pointer",
       }}
