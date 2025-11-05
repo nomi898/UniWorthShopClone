@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import products from "../../DummyData/Products";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -6,159 +6,206 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Box, IconButton } from "@mui/material";
 import { ShoppingCart, Search, FavoriteBorder } from "@mui/icons-material";
-import { NavLink } from "react-router";
-import ScrollToTop from "../Layout/ScrollToTop";
+import { NavLink, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import ProductQuickView from "../Sections/ProductQuickView";
 
 const NewArrivalsGrid = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [viewOnlyQuick, setViewOnlyQuick] = useState(false);
+
+  // Filter products marked as "new arrival"
   const newArrivals = products.flatMap((category) =>
     category.subcategories.flatMap((sub) =>
       sub.products.filter((product) => product.isNewArrival)
     )
   );
 
-  const handleAddToCart = (e, productId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Add to cart:', productId);
-    // Add your cart logic here
+  // Open Quick View modal
+  const handleQuickView = (e, product) => {
+    // prevent NavLink navigation when clicking icons
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setSelectedProduct(product);
+    setViewOnlyQuick(false);
+    setQuickViewOpen(true);
   };
 
-  const handleQuickView = (e, productId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Quick view:', productId);
-    // Add your quick view logic
+  // Navigate to product detail (used by search icon)
+  const handleSearchViewOnly = (e, product) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setSelectedProduct(product);
+    setViewOnlyQuick(true);
+    setQuickViewOpen(true);
   };
 
+  // Wishlist (placeholder)
   const handleAddToWishlist = (e, productId) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Add to wishlist:', productId);
-    // Add your wishlist logic
+    console.log("Add to wishlist:", productId);
+  };
+
+  const handleCloseQuickView = () => {
+    setQuickViewOpen(false);
+    setSelectedProduct(null);
   };
 
   return (
-    <Box sx={{ marginInline: { xs: 2, sm: 4, md: 8, lg: 30 }, mb: 4 }}>
-      <Swiper
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        slidesPerView={3}
-        spaceBetween={10}
-        pagination={{ clickable: true }}
-        modules={[Pagination, Autoplay]}
-        breakpoints={{
-          0: { slidesPerView: 2, spaceBetween: 8 },
-          768: { slidesPerView: 2, spaceBetween: 12 },
-          1280: { slidesPerView: 3, spaceBetween: 10 },
-        }}
-        className="mySwiper"
-      >
-        {newArrivals.map((product) => (
-          <SwiperSlide key={product.id}>
-            <NavLink
-              to={`/product/${product.id}`}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
-              <Box sx={{ position: "relative" }}>
-                {/* Image Container with Hover Overlay */}
-                <Box
-                  sx={{
-                    position: "relative",
-                    overflow: "hidden",
-                    borderRadius: 1,
-                    mb: 2,
-                    "&:hover .hover-overlay": {
-                      opacity: 1,
-                      transform: "translateX(0)",
-                    },
-                    "&:hover img": {
-                      transform: "scale(1.05)",
-                    },
-                  }}
-                >
+    <>
+      <Box sx={{ marginInline: { xs: 2, sm: 4, md: 8, lg: 30 }, mb: 4 }}>
+        <Swiper
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          slidesPerView={3}
+          spaceBetween={10}
+          pagination={{ clickable: true }}
+          modules={[Pagination, Autoplay]}
+          breakpoints={{
+            0: { slidesPerView: 2, spaceBetween: 8 },
+            768: { slidesPerView: 2, spaceBetween: 12 },
+            1280: { slidesPerView: 3, spaceBetween: 10 },
+          }}
+          className="mySwiper"
+        >
+          {newArrivals.map((product) => (
+            <SwiperSlide key={product.id}>
+              {/* Keep NavLink around the card so clicking outside icons navigates to product */}
+              <NavLink
+                to={`/product/${product.id}`}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  display: "block",
+                }}
+              >
+                <Box sx={{ position: "relative" }}>
+                  {/* Image container */}
                   <Box
-                    component="img"
-                    src={product.image}
-                    alt={product.name}
                     sx={{
-                      width: "100%",
-                      height: "auto",
-                      aspectRatio: "3/4",
-                      objectFit: "cover",
-                      transition: "transform 0.3s ease",
-                    }}
-                  />
-
-                  {/* Hover Overlay with Icons - Vertical on Bottom Right */}
-                  <Box
-                    className="hover-overlay"
-                    sx={{
-                      position: "absolute",
-                      bottom: 16,
-                      right: 0,
-                      transform: "translateX(100%)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 1,
-                      opacity: 0,
-                      transition: "all 0.3s ease",
-                      paddingRight: 2,
+                      position: "relative",
+                      overflow: "hidden",
+                      borderRadius: 1,
+                      mb: 2,
+                      "&:hover .hover-overlay": {
+                        opacity: 1,
+                        transform: "translateX(0)",
+                      },
+                      "&:hover img": {
+                        transform: "scale(1.05)",
+                      },
                     }}
                   >
-                    <IconButton
-                      onClick={(e) => handleAddToCart(e, product.id)}
+                    <Box
+                      component="img"
+                      src={product.image}
+                      alt={product.name}
                       sx={{
-                        backgroundColor: "white",
-                        "&:hover": { backgroundColor: "#f3f4f6" },
-                        boxShadow: 3,
-                        width: 40,
-                        height: 40,
+                        width: "100%",
+                        height: "auto",
+                        aspectRatio: "3/4",
+                        objectFit: "cover",
+                        transition: "transform 0.3s ease",
                       }}
-                    >
-                      <ShoppingCart sx={{ color: "#1f2937", fontSize: 20 }} />
-                    </IconButton>
+                    />
 
-                    <IconButton
-                      onClick={(e) => handleQuickView(e, product.id)}
+                    {/* Hover Overlay Icons */}
+                    <Box
+                      className="hover-overlay"
                       sx={{
-                        backgroundColor: "white",
-                        "&:hover": { backgroundColor: "#f3f4f6" },
-                        boxShadow: 3,
-                        width: 40,
-                        height: 40,
+                        position: "absolute",
+                        bottom: 16,
+                        right: 0,
+                        transform: "translateX(100%)",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        opacity: 0,
+                        transition: "all 0.3s ease",
+                        paddingRight: 2,
+                        // make sure overlay sits above link hit area
+                        zIndex: 2,
                       }}
                     >
-                      <Search sx={{ color: "#1f2937", fontSize: 20 }} />
-                    </IconButton>
+                      {/* 🛒 Cart icon — OPEN QUICK VIEW (not direct add) */}
+                      <IconButton
+                        onClick={(e) => handleQuickView(e, product)}
+                        sx={{
+                          backgroundColor: "white",
+                          "&:hover": { backgroundColor: "#f3f4f6" },
+                          boxShadow: 3,
+                          width: 40,
+                          height: 40,
+                        }}
+                        aria-label="Quick view / add to cart"
+                      >
+                        <ShoppingCart sx={{ color: "#1f2937", fontSize: 20 }} />
+                      </IconButton>
 
-                    <IconButton
-                      onClick={(e) => handleAddToWishlist(e, product.id)}
-                      sx={{
-                        backgroundColor: "white",
-                        "&:hover": { backgroundColor: "#f3f4f6" },
-                        boxShadow: 3,
-                        width: 40,
-                        height: 40,
-                      }}
-                    >
-                      <FavoriteBorder sx={{ color: "#1f2937", fontSize: 20 }} />
-                    </IconButton>
+                      {/* 🔍 Search — open view-only quick view */}
+                      <IconButton
+                        onClick={(e) => handleSearchViewOnly(e, product)}
+                        sx={{
+                          backgroundColor: "white",
+                          "&:hover": { backgroundColor: "#f3f4f6" },
+                          boxShadow: 3,
+                          width: 40,
+                          height: 40,
+                        }}
+                        aria-label="View product"
+                      >
+                        <Search sx={{ color: "#1f2937", fontSize: 20 }} />
+                      </IconButton>
+
+                      {/* ❤️ Wishlist */}
+                      <IconButton
+                        component={NavLink}
+                        to="/signin"
+                        onClick={(e) => { e.stopPropagation(); }}
+                        sx={{
+                          backgroundColor: "white",
+                          "&:hover": { backgroundColor: "#f3f4f6" },
+                          boxShadow: 3,
+                          width: 40,
+                          height: 40,
+                        }}
+                        aria-label="Add to wishlist"
+                      >
+                        <FavoriteBorder sx={{ color: "#1f2937", fontSize: 20 }} />
+                      </IconButton>
+                    </Box>
                   </Box>
-                </Box>
 
-                <p>{product.name}</p>
-                <h5 className="text-black-400">PKR {product.price}</h5>
-              </Box>
-            </NavLink>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </Box>
+                  <p style={{ margin: 0 }}>{product.name}</p>
+                  <h5 style={{ margin: "6px 0 0", color: "#111", fontWeight: 500 }}>
+                    PKR {product.price}
+                  </h5>
+                </Box>
+              </NavLink>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Box>
+
+      {/* Quick View Modal (Add to Cart happens inside modal) */}
+      <ProductQuickView
+        open={quickViewOpen}
+        onClose={handleCloseQuickView}
+        product={selectedProduct}
+        viewOnly={viewOnlyQuick}
+      />
+    </>
   );
 };
 

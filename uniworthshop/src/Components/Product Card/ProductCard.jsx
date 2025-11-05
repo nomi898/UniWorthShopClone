@@ -1,10 +1,13 @@
 
-import React from "react";
-import { Box, Typography, Card, CardMedia, CardContent, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography, Card, CardMedia, CardContent, Button, IconButton } from "@mui/material";
+import { ShoppingCart } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import ProductQuickView from "../Sections/ProductQuickView";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const [quickOpen, setQuickOpen] = useState(false);
 
   return (
     <Card
@@ -21,13 +24,22 @@ const ProductCard = ({ product }) => {
       onClick={() => navigate(`/product/${product.id}`)}
     >
       {/* Product Image */}
-      <CardMedia
+      <Box sx={{ position: "relative" }}>
+        <CardMedia
         component="img"
         height="220"
         image={product.image}
         alt={product.name}
         sx={{ objectFit: "cover" }}
-      />
+        />
+        <IconButton
+          onClick={(e) => { e.stopPropagation(); setQuickOpen(true); }}
+          sx={{ position: "absolute", bottom: 8, right: 8, bgcolor: "#fff", boxShadow: 2, width: 40, height: 40 }}
+          aria-label="Quick view"
+        >
+          <ShoppingCart sx={{ color: "#1f2937", fontSize: 20 }} />
+        </IconButton>
+      </Box>
 
       {/* Product Info */}
       <CardContent sx={{ flexGrow: 1 }}>
@@ -42,21 +54,8 @@ const ProductCard = ({ product }) => {
         </Typography>
       </CardContent>
 
-      {/* Optional: Add to Cart Button */}
-      <Box sx={{ p: 2, pt: 0 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent card click
-            // Add to cart logic here
-            console.log("Added to cart:", product.name);
-          }}
-        >
-          Add to Cart
-        </Button>
-      </Box>
+      {/* Quick View Modal */}
+      <ProductQuickView open={quickOpen} onClose={() => setQuickOpen(false)} product={product} />
     </Card>
   );
 };

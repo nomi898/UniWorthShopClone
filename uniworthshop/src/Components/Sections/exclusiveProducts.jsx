@@ -2,27 +2,26 @@ import React, { useState } from "react";
 import { Box, Tabs, Tab, Typography, Divider, IconButton } from "@mui/material";
 import { ShoppingCart, Search, FavoriteBorder } from "@mui/icons-material";
 import products from "../../DummyData/Products";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
+import ProductQuickView from "../Sections/ProductQuickView";
 
 const ExclusiveProducts = () => {
   const [activeTab, setActiveTab] = useState("Shirts");
+  const [quickOpen, setQuickOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [viewOnlyQuick, setViewOnlyQuick] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
-  const handleAddToCart = (e, productId) => {
+  const openQuickView = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Add to cart:', productId);
-    // Add your cart logic 
-  };
-
-  const handleQuickView = (e, productId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Quick view:', productId);
-    // Add your quick view logic
+    setSelectedProduct(product);
+    setViewOnlyQuick(false);
+    setQuickOpen(true);
   };
 
   const handleAddToWishlist = (e, productId) => {
@@ -152,7 +151,7 @@ const ExclusiveProducts = () => {
                     }}
                   >
                     <IconButton
-                      onClick={(e) => handleAddToCart(e, item.id)}
+                      onClick={(e) => openQuickView(e, item)}
                       sx={{
                         backgroundColor: "white",
                         "&:hover": { backgroundColor: "#f3f4f6" },
@@ -165,7 +164,7 @@ const ExclusiveProducts = () => {
                     </IconButton>
 
                     <IconButton
-                      onClick={(e) => handleQuickView(e, item.id)}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedProduct(item); setViewOnlyQuick(true); setQuickOpen(true); }}
                       sx={{
                         backgroundColor: "white",
                         "&:hover": { backgroundColor: "#f3f4f6" },
@@ -178,7 +177,9 @@ const ExclusiveProducts = () => {
                     </IconButton>
 
                     <IconButton
-                      onClick={(e) => handleAddToWishlist(e, item.id)}
+                      component={NavLink}
+                      to="/signin"
+                      onClick={(e) => { e.stopPropagation(); }}
                       sx={{
                         backgroundColor: "white",
                         "&:hover": { backgroundColor: "#f3f4f6" },
@@ -216,6 +217,8 @@ const ExclusiveProducts = () => {
           </Typography>
         )}
       </Box>
+      {/* Quick View Modal */}
+      <ProductQuickView open={quickOpen} onClose={() => setQuickOpen(false)} product={selectedProduct} viewOnly={viewOnlyQuick} />
     </>
   );
 };

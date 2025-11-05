@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import { Box, Typography, Button, Grid } from '@mui/material';
 import { NavLink, useParams } from 'react-router';
 import products from '../DummyData/Products';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../store/slices/cartlist';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode, Thumbs } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/thumbs';
 
 const ProductDetail = () => {
   const { productId } = useParams();
+  const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [showProductDetail, setShowProductDetail] = useState(true);
   const [showShipping, setShowShipping] = useState(false);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   // Find product, subcategory, and category dynamically by productId
   let product, subcategoryData, categoryData;
@@ -43,7 +52,13 @@ const ProductDetail = () => {
       alert('Please select a size');
       return;
     }
-    console.log('Added to cart:', { product, size: selectedSize, quantity });
+    if (!product) return;
+    const cartItem = {
+      ...product,
+      size: selectedSize,
+      quantity,
+    };
+    dispatch(addToCart(cartItem));
   };
 
   return (
@@ -89,38 +104,49 @@ const ProductDetail = () => {
       {/* 3 Column Horizontal Layout */}
       <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' }, maxWidth: '100%', overflow: 'hidden' }}>
         
-        {/* Column 1: Product Image */}
+        {/* Column 1: Product Image with Swiper Gallery */}
         <Box sx={{ flex: { xs: '1', md: '0 0 30%' }, minWidth: 0 }}>
-          <Box sx={{ mb: 2 }}>
-            <Box
-              component="img"
-              src={product?.image || '/images/product-main.jpg'}
-              alt={productLabel || 'Product'}
-              sx={{ width: '100%', borderRadius: '8px', cursor: 'pointer' }}
-            />
-            <Typography variant="caption" sx={{ textAlign: 'center', display: 'block', mt: 1, color: 'text.secondary' }}>
-              Tap or pinch to expand
-            </Typography>
-          </Box>
-
-          {/* Thumbnail Images */}
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {[1, 2, 3, 4, 5].map((item) => (
-              <Box
-                key={item}
-                component="img"
-                src={`/images/product-thumb-${item}.jpg`}
-                alt={`Thumbnail ${item}`}
-                sx={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  border: '2px solid transparent',
-                  '&:hover': { border: '2px solid #D4A574' }
-                }}
-              />
+          {/* Main image swiper */}
+          <Swiper
+            modules={[FreeMode, Thumbs]}
+            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+            style={{ width: '100%', borderRadius: 8 }}
+            spaceBetween={10}
+         >
+            {([product?.image] || []).filter(Boolean).map((src, idx) => (
+              <SwiperSlide key={idx}>
+                <Box component="img" src={src} alt={productLabel || 'Product'} sx={{ width: '100%', display: 'block' }} />
+              </SwiperSlide>
             ))}
+          </Swiper>
+
+          {/* Thumbnails swiper */}
+          <Box sx={{ mt: 1 }}>
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              modules={[FreeMode, Thumbs]}
+              spaceBetween={8}
+              slidesPerView={5}
+              freeMode
+              watchSlidesProgress
+            >
+              {([product?.image] || []).filter(Boolean).map((src, idx) => (
+                <SwiperSlide key={idx} style={{ width: 60, height: 60 }}>
+                  <Box
+                    component="img"
+                    src={src}
+                    alt={`thumb-${idx}`}
+                    sx={{
+                      width: '100%',
+                      height: 60,
+                      objectFit: 'cover',
+                      border: '1px solid #eee',
+                      borderRadius: 2,
+                    }}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </Box>
         </Box>
 
