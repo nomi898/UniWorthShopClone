@@ -17,6 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteFromCart } from "../../store/slices/cartlist";
 import { useLocation, NavLink, useNavigate } from "react-router";
@@ -49,7 +50,7 @@ const Header = () => {
     0
   );
 
-  // ✅ Scroll effect for homepage
+  //  Scroll effect for homepage
   useEffect(() => {
     if (!isHomePage) {
       setScrolled(true);
@@ -92,7 +93,10 @@ const Header = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: scrolled ? "10px 20px" : "20px",
+            padding: {
+              xs: scrolled ? "8px 12px" : "12px",
+              md: scrolled ? "10px 20px" : "20px",
+            },
             backgroundColor: scrolled ? "white" : "transparent",
             transition: "all 0.3s ease",
             overflow: "visible",
@@ -101,13 +105,29 @@ const Header = () => {
         >
           {/* Menu icon & text */}
           <Box
-            sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              cursor: "pointer",
+            }}
             onClick={handleDrawerToggle}
           >
-            <MenuIcon sx={{ fontSize: 30, color: scrolled ? "black" : "white" }} />
-            <Typography sx={{ color: scrolled ? "black" : "white", fontWeight: 500 }}>
+            <MenuIcon
+              sx={{ fontSize: { xs: 26, md: 30 }, color: scrolled ? "black" : "white" }}
+            />
+            <Typography
+              sx={{ display: { xs: "none", md: "block" }, color: scrolled ? "black" : "white", fontWeight: 500 }}
+            >
               Menu
             </Typography>
+            {/* Compact search icon beside menu on mobile */}
+            <IconButton
+              onClick={(e) => { e.stopPropagation(); setShowSearch((s) => !s); }}
+              sx={{ ml: 1, display: { xs: "inline-flex", md: "none" }, color: scrolled ? "black" : "white" }}
+            >
+              <SearchIcon />
+            </IconButton>
           </Box>
 
           {/* Logo */}
@@ -117,7 +137,7 @@ const Header = () => {
                 src={scrolled ? logoColored : logoWhite}
                 alt="Logo"
                 style={{
-                  width: scrolled ? 50 : 150,
+                  width: scrolled ? 48 : 140,
                   height: "auto",
                   transition: "all 0.3s ease",
                 }}
@@ -135,7 +155,9 @@ const Header = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && searchText.trim()) {
-                      navigate(`/search?query=${encodeURIComponent(searchText.trim())}`);
+                      navigate(
+                        `/search?query=${encodeURIComponent(searchText.trim())}`
+                      );
                       setShowSearch(false);
                       setSearchText("");
                     }
@@ -151,7 +173,9 @@ const Header = () => {
                 <Button
                   onClick={() => {
                     if (!searchText.trim()) return;
-                    navigate(`/search?query=${encodeURIComponent(searchText.trim())}`);
+                    navigate(
+                      `/search?query=${encodeURIComponent(searchText.trim())}`
+                    );
                     setShowSearch(false);
                     setSearchText("");
                   }}
@@ -169,7 +193,10 @@ const Header = () => {
                 </Button>
                 <Button
                   onClick={() => setShowSearch(false)}
-                  sx={{ textTransform: "none", color: scrolled ? "black" : "white" }}
+                  sx={{
+                    textTransform: "none",
+                    color: scrolled ? "black" : "white",
+                  }}
                 >
                   Cancel
                 </Button>
@@ -188,6 +215,7 @@ const Header = () => {
                       ? "#f2f2f2"
                       : "rgba(255,255,255,0.1)",
                   },
+                  display: { xs: "none", md: "inline-flex" },
                 }}
                 startIcon={<SearchIcon />}
               >
@@ -225,10 +253,10 @@ const Header = () => {
                   </Badge>
                 }
               >
-                Bag
+                <Box sx={{ display: { xs: "none", md: "block" } }}>Bag</Box>
               </Button>
 
-              {/* 🛒 CART DROPDOWN */}
+              {/* CART DROPDOWN */}
               {cartHover && (
                 <Paper
                   elevation={6}
@@ -273,7 +301,9 @@ const Header = () => {
                               }}
                             />
                             <Box>
-                              <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+                              <Typography
+                                sx={{ fontSize: 14, fontWeight: 500 }}
+                              >
                                 {item.name}
                               </Typography>
                               <Typography sx={{ fontSize: 13, color: "#555" }}>
@@ -287,7 +317,10 @@ const Header = () => {
                           <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
                             Rs.{item.price * (item.quantity || 1)}
                           </Typography>
-                          <IconButton size="small" onClick={() => dispatch(deleteFromCart(item))}>
+                          <IconButton
+                            size="small"
+                            onClick={() => dispatch(deleteFromCart(item))}
+                          >
                             <CloseIcon sx={{ fontSize: 16 }} />
                           </IconButton>
                         </Box>
@@ -352,6 +385,15 @@ const Header = () => {
                 </Paper>
               )}
             </Box>
+
+            {/* Account icon (signin) on mobile */}
+            <IconButton
+              component={NavLink}
+              to="/signin"
+              sx={{ color: scrolled ? "black" : "white", display: { xs: "inline-flex", md: "none" } }}
+            >
+              <PersonOutlineIcon />
+            </IconButton>
           </Box>
         </Box>
       </Box>
@@ -396,11 +438,11 @@ const Header = () => {
               }}
             >
               <ListItemText
-                primary={category.name}
-                primaryTypographyProps={{
-                  fontWeight: "bold",
-                  fontSize: "0.95rem",
-                }}
+                primary={
+                  <Typography fontWeight="bold" fontSize="0.95rem">
+                    {category.name}
+                  </Typography>
+                }
               />
               {category.subcategories?.length > 0 && (
                 <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
@@ -418,10 +460,7 @@ const Header = () => {
             "Shipping Policy",
           ].map((text, i) => (
             <ListItemButton key={i}>
-              <ListItemText
-                primary={text}
-                primaryTypographyProps={{ fontSize: "0.9rem" }}
-              />
+              <ListItemText primary={text} />
             </ListItemButton>
           ))}
         </Box>
@@ -438,7 +477,7 @@ const Header = () => {
               left: 280,
               minWidth: 500,
               bgcolor: "white",
-              borderRadius: 1,
+              borderRadius: 2,
               p: 3,
               display: "grid",
               gridTemplateColumns: "repeat(3, 1fr)",
@@ -448,7 +487,7 @@ const Header = () => {
             }}
           >
             {hoveredCategory.subcategories
-              .filter((sub) => sub !== "nill")
+              .filter((sub) => sub !== "null")
               .map((sub, index) => (
                 <Button
                   key={index}

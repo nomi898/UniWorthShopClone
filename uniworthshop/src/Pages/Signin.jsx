@@ -11,9 +11,8 @@ import { Link, NavLink } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Footer from "../Components/Layout/footer";
 import Header from "../Components/Layout/Header";
-import Topbar from "../Components/Layout/Topbar";
+
 
 const siginSchema = yup
   .object({

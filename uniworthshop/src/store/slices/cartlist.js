@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import products from "../../DummyData/Products";
 
 const initialState = {
-  products: products, // optional, if you need product list access
-  items: [], // ✅ holds all cart items
+  products: products, //  product list access
+  items: [], //   all cart items
 };
 
 export const cartlistSlice = createSlice({
@@ -13,7 +13,7 @@ export const cartlistSlice = createSlice({
     addToCart: (state, action) => {
       const item = action.payload;
       
-      // ✅ FIXED: Check both id AND size to handle different sizes separately
+      //  Check both id AND size to handle different sizes separately
       const existingItem = state.items.find(
         (prod) => prod.id === item.id && prod.size === item.size
       );
@@ -30,7 +30,7 @@ export const cartlistSlice = createSlice({
     removeFromCart: (state, action) => {
       const item = action.payload;
       
-      // ✅ FIXED: Check both id AND size
+      //  Check both id AND size
       const existingItem = state.items.find(
         (prod) => prod.id === item.id && prod.size === item.size
       );
@@ -50,7 +50,7 @@ export const cartlistSlice = createSlice({
     deleteFromCart: (state, action) => {
       const item = action.payload;
       
-      // ✅ FIXED: Check both id AND size when deleting
+      //  Check both id AND size when deleting
       state.items = state.items.filter(
         (prod) => !(prod.id === item.id && prod.size === item.size)
       );

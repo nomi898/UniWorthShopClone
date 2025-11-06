@@ -134,11 +134,11 @@ const NewArrivalsGrid = () => {
                         opacity: 0,
                         transition: "all 0.3s ease",
                         paddingRight: 2,
-                        // make sure overlay sits above link hit area
+                        // overlay sits above link hit area
                         zIndex: 2,
                       }}
                     >
-                      {/* 🛒 Cart icon — OPEN QUICK VIEW (not direct add) */}
+                      {/*  Cart icon — OPEN QUICK VIEW  */}
                       <IconButton
                         onClick={(e) => handleQuickView(e, product)}
                         sx={{
@@ -153,7 +153,7 @@ const NewArrivalsGrid = () => {
                         <ShoppingCart sx={{ color: "#1f2937", fontSize: 20 }} />
                       </IconButton>
 
-                      {/* 🔍 Search — open view-only quick view */}
+                      {/* Search — open view-only quick view */}
                       <IconButton
                         onClick={(e) => handleSearchViewOnly(e, product)}
                         sx={{
@@ -168,11 +168,13 @@ const NewArrivalsGrid = () => {
                         <Search sx={{ color: "#1f2937", fontSize: 20 }} />
                       </IconButton>
 
-                      {/* ❤️ Wishlist */}
+                      {/* Wishlist */}
                       <IconButton
                         component={NavLink}
                         to="/signin"
-                        onClick={(e) => { e.stopPropagation(); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
                         sx={{
                           backgroundColor: "white",
                           "&:hover": { backgroundColor: "#f3f4f6" },
@@ -182,13 +184,21 @@ const NewArrivalsGrid = () => {
                         }}
                         aria-label="Add to wishlist"
                       >
-                        <FavoriteBorder sx={{ color: "#1f2937", fontSize: 20 }} />
+                        <FavoriteBorder
+                          sx={{ color: "#1f2937", fontSize: 20 }}
+                        />
                       </IconButton>
                     </Box>
                   </Box>
 
                   <p style={{ margin: 0 }}>{product.name}</p>
-                  <h5 style={{ margin: "6px 0 0", color: "#111", fontWeight: 500 }}>
+                  <h5
+                    style={{
+                      margin: "6px 0 0",
+                      color: "#111",
+                      fontWeight: 500,
+                    }}
+                  >
                     PKR {product.price}
                   </h5>
                 </Box>

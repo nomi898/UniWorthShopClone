@@ -1,19 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router"; 
-import HomePage from './Pages/HomePage';
-import Layout from './Components/Layout/Layout';
-import ProductDetail from './Pages/ProductDetail';
-import CategoryPage from './Pages/CategoryPage'; 
-import CartPage from './Pages/CartPage';
+import { BrowserRouter, Routes, Route } from "react-router";
+import HomePage from "./Pages/HomePage";
+import Layout from "./Components/Layout/Layout";
+import ProductDetail from "./Pages/ProductDetail";
+import CategoryPage from "./Pages/CategoryPage";
+import CartPage from "./Pages/CartPage";
 import ScrollToTop from "./Components/Layout/ScrollToTop";
-import Signup from './Pages/Signup';
+import Signup from "./Pages/Signup";
 import Signin from "./Pages/Signin";
-import Checkout from './Pages/Checkout';
-import SearchResults from './Pages/SearchResults';
+import Checkout from "./Pages/Checkout";
+import SearchResults from "./Pages/SearchResults";
 
 function App() {
   return (
     <BrowserRouter>
-     <ScrollToTop /> 
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* Home page */}
@@ -31,8 +31,8 @@ function App() {
         </Route>
 
         {/* auth  */}
-        <Route path='/register' element={<Signup />}></Route>
-        <Route path= '/signin' element={<Signin />}></Route>
+        <Route path="/register" element={<Signup />}></Route>
+        <Route path="/signin" element={<Signin />}></Route>
       </Routes>
     </BrowserRouter>
   );

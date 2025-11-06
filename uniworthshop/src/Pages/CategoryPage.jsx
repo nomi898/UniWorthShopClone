@@ -290,7 +290,7 @@ const CategoryPage = () => {
                       sx={{ width: "100%", aspectRatio: "4/5", objectFit: "cover" }}
                     />
 
-                    {/* Hover Overlay with Icons - Vertical on Bottom Right */}
+                    {/* Hover Overlay with Icons & Vertical on Bottom Right */}
                     <Box
                       className="hover-overlay"
                       sx={{

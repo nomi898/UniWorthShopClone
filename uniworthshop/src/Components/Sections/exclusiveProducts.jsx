@@ -134,7 +134,7 @@ const ExclusiveProducts = () => {
                     }}
                   />
 
-                  {/* Hover Overlay with Icons - Vertical on Bottom Right */}
+                  {/* Hover Overlay with Icons & Vertical on Bottom Right */}
                   <Box
                     className="hover-overlay"
                     sx={{

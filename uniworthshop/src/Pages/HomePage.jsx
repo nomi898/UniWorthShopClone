@@ -11,6 +11,7 @@ import {
 import TopBar from "../Components/Layout/TopBar";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -40,7 +41,6 @@ import hero5mobile from "../assets/Images/hero5mobile.jpg";
 import hero6 from "../assets/Images/hero6.jpg";
 import hero6mobile from "../assets/Images/hero6mobile.jpg";
 
-
 const HomePage = () => {
   // hero section category links
   const heroLinks = [
@@ -65,16 +65,53 @@ const HomePage = () => {
   ];
 
   return (
-    <Box sx={{ overflowX: "hidden", width: "100%" }}>
+    <Box 
+      sx={{ 
+        width: "100%",
+        maxWidth: "100vw",
+        overflowX: "hidden",
+        position: "relative"
+      }}
+    >
       {/* Hero section */}
-      <Box sx={{ position: "relative", width: "100%", overflowX: "hidden" }}>
-        
+      <Box 
+        sx={{ 
+          position: "relative", 
+          width: "100%",
+          maxWidth: "100%",
+          overflow: "hidden",
+          margin: 0,
+          padding: 0
+        }}
+      >
         {/* Hero slider */}
-        <Box sx={{ position: "relative", width: "100%", overflow: "hidden" }}>
+        <Box 
+          sx={{ 
+            position: "relative", 
+            width: "100%",
+            maxWidth: "100%",
+            overflow: "hidden",
+            margin: 0,
+            padding: 0,
+            "& .swiper": {
+              width: "100%",
+              maxWidth: "100%",
+              margin: 0,
+              padding: 0
+            },
+            "& .swiper-wrapper": {
+              width: "100%",
+              maxWidth: "100%"
+            },
+            "& .swiper-slide": {
+              width: "100%",
+              maxWidth: "100%",
+              overflow: "hidden"
+            }
+          }}
+        >
           <Swiper
-            modules={[Navigation,
-               Pagination, Autoplay
-              ]}
+            modules={[Navigation, Pagination, Autoplay]}
             navigation={true}
             pagination={{ clickable: true }}
             // autoplay={{ delay: 3000, disableOnInteraction: false }}
@@ -83,29 +120,64 @@ const HomePage = () => {
             spaceBetween={0}
             simulateTouch={true}
             grabCursor={true}
-            style={{ width: "100%", height: "100%" }}
+            centeredSlides={true}
+            style={{ 
+              width: "100%", 
+              maxWidth: "100%",
+              margin: 0,
+              padding: 0,
+              overflow: "hidden"
+            }}
           >
             {heroImages.map((img, index) => (
-
-<SwiperSlide key={index}>
-  <NavLink
-  to={`/category/${encodeURIComponent(heroLinks[index].category)}?subcategory=${encodeURIComponent(heroLinks[index].subcategory)}`}
-     style={{ display: "block", width: "100%", height: "100%" }}
-  >
-    <Box
-      component="img"
-      src={img}
-      alt={`Hero Background ${index + 1}`}
-      sx={{
-        width: "100%",
-        height: { xs: "700px", sm: "600px", md: "700px", lg: "900px" },
-        objectFit: "cover",
-        cursor: "pointer",
-      }}
-    />
-  </NavLink>
-</SwiperSlide>
-
+              <SwiperSlide 
+                key={index}
+                style={{ 
+                  width: "100%",
+                  maxWidth: "100%",
+                  overflow: "hidden",
+                  margin: 0,
+                  padding: 0
+                }}
+              >
+                <NavLink
+                  to={`/category/${encodeURIComponent(
+                    heroLinks[index].category
+                  )}?subcategory=${encodeURIComponent(
+                    heroLinks[index].subcategory
+                  )}`}
+                  style={{ 
+                    display: "block", 
+                    width: "100%",
+                    maxWidth: "100%",
+                    overflow: "hidden",
+                    margin: 0,
+                    padding: 0
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={img}
+                    alt={`Hero Background ${index + 1}`}
+                    sx={{
+                      width: "100%",
+                      maxWidth: "100%",
+                      height: {
+                        xs: "700px",
+                        sm: "600px",
+                        md: "700px",
+                        lg: "1500px",
+                      },
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      cursor: "pointer",
+                      display: "block",
+                      margin: 0,
+                      padding: 0
+                    }}
+                  />
+                </NavLink>
+              </SwiperSlide>
             ))}
           </Swiper>
         </Box>
@@ -119,18 +191,19 @@ const HomePage = () => {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            zIndex: 10, // above Swiper
+            zIndex: 10,
             pointerEvents: "none",
           }}
-        >
-        </Box>
+        ></Box>
       </Box>
+      
       {/* Category Grid */}
-      <Box sx={{ width: "100%", overflowX: "hidden" }}>
+      <Box sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}>
         <CategoryGrid />
       </Box>
+      
       {/* NewArrivalsGrid  */}
-      <Box sx={{ width: "100%", overflowX: "hidden" }}>
+      <Box sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}>
         <Typography
           sx={{
             fontSize: {
@@ -158,91 +231,95 @@ const HomePage = () => {
           />
         </Typography>
         <NewArrivalsGrid />
-        </Box>
+      </Box>
 
-        <AccessoriesSection />
-        <ExclusiveProducts />
-        {/* SHIPPING PAYMENT QUALITY */}
-        <Box
+      <AccessoriesSection />
+      <ExclusiveProducts />
+      
+      {/* SHIPPING PAYMENT QUALITY */}
+      <Box
+        sx={{
+          borderTop: "1px solid #e0e0e0",
+          borderBottom: "1px solid #e0e0e0",
+          py: 4,
+          px: { xs: 2, sm: 3, md: 6 },
+          width: "100%",
+          maxWidth: "100%",
+          boxSizing: "border-box",
+          overflow: "hidden",
+          margin: 0
+        }}
+      >
+        <Grid
+          container
+          spacing={0}
           sx={{
-            borderTop: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            py: 4,
-            px: { xs: 2, sm: 3, md: 6 }, // Changed xs from 1 to 2 for better mobile spacing
-            width: "100%",
-            boxSizing: "border-box", // Ensures padding is included in width
+            display: "flex",
+            flexWrap: { xs: "wrap", sm: "nowrap" },
+            justifyContent: "space-between",
+            maxWidth: "100%"
           }}
         >
-          <Grid
-            container
-            spacing={0}
-            sx={{
-              display: "flex",
-              flexWrap: { xs: "wrap", sm: "nowrap" }, // Allow wrap on mobile
-              justifyContent: "space-between",
-            }}
-          >
-            {[
-              {
-                icon: (
-                  <LocalShippingOutlinedIcon
-                    sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
-                  />
-                ),
-                text: "Free Shipping",
-              },
-              {
-                icon: (
-                  <VerifiedUserOutlinedIcon
-                    sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
-                  />
-                ),
-                text: "Secure Payments",
-              },
-              {
-                icon: (
-                  <EmojiEventsOutlinedIcon
-                    sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
-                  />
-                ),
-                text: "Premium Quality",
-              },
-            ].map((item, index) => (
-              <Grid
-                item
-                key={index}
+          {[
+            {
+              icon: (
+                <LocalShippingOutlinedIcon
+                  sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
+                />
+              ),
+              text: "Free Shipping",
+            },
+            {
+              icon: (
+                <VerifiedUserOutlinedIcon
+                  sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
+                />
+              ),
+              text: "Secure Payments",
+            },
+            {
+              icon: (
+                <EmojiEventsOutlinedIcon
+                  sx={{ fontSize: { xs: 36, sm: 48 }, color: "#D4A574" }}
+                />
+              ),
+              text: "Premium Quality",
+            },
+          ].map((item, index) => (
+            <Grid
+              item
+              key={index}
+              sx={{
+                width: { xs: "100%", sm: "33.33%" },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: { xs: "row", sm: "column" },
+                textAlign: "center",
+                gap: 1.5,
+                mb: { xs: 2, sm: 0 },
+              }}
+            >
+              {item.icon}
+              <Typography
+                variant="h6"
                 sx={{
-                  width: { xs: "100%", sm: "33.33%" }, // Full width on mobile
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: { xs: "row", sm: "column" }, // Row on mobile, column on desktop
-                  textAlign: "center",
-                  gap: 1.5,
-                  mb: { xs: 2, sm: 0 }, // Add margin bottom on mobile
+                  fontWeight: 500,
+                  color: "#333",
+                  fontSize: { xs: "0.9rem", sm: "1rem" },
                 }}
               >
-                {item.icon}
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 500,
-                    color: "#333",
-                    fontSize: { xs: "0.9rem", sm: "1rem" },
-                  }}
-                >
-                  {item.text}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-        {/* categories at the end  */}
-        <Box sx={{ width: "100%", overflowX: "hidden" }}>
-          {" "}
-          {/* Added overflow fix */}
-          <RatioPotrait />
-        </Box>
+                {item.text}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+      
+      {/* categories at the end  */}
+      <Box sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}>
+        <RatioPotrait />
+      </Box>
 
       {/* <Footer /> */}
     </Box>
