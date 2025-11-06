@@ -7,7 +7,9 @@ import ethnic from '../../assets/Images/ethnic.jpg';
 const RatioPotrait = () => {
   return (
     <Box sx={{ py: 6 }}>
-      <Grid container spacing={2} justifyContent="center" sx={{ mx: 2 }}>
+      <Grid 
+      
+      container spacing={2} justifyContent="center" sx={{ mx: 2 }}>
 
         {/* Made To Measure */}
         <Grid size={{ xs: 6, md: 4 }}>
