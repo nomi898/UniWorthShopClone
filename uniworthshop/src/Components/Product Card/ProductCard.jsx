@@ -25,13 +25,13 @@ const ProductCard = ({ product }) => {
     >
       {/* Product Image */}
       <Box sx={{ position: "relative" }}>
-        <CardMedia
+      <CardMedia
         component="img"
         height="220"
         image={product.image}
         alt={product.name}
         sx={{ objectFit: "cover" }}
-        />
+      />
         <IconButton
           onClick={(e) => { e.stopPropagation(); setQuickOpen(true); }}
           sx={{ position: "absolute", bottom: 8, right: 8, bgcolor: "#fff", boxShadow: 2, width: 40, height: 40 }}

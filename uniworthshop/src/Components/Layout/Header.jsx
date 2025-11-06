@@ -60,12 +60,12 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
-
+// drawer of side menu 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
     setHoveredCategory(null);
   };
-
+// opening of submenu 
   const handleMouseEnter = (event, category) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setSubmenuPosition({ top: rect.top });
@@ -427,28 +427,46 @@ const Header = () => {
         </Typography>
 
         <List onMouseLeave={handleMouseLeave}>
-          {Categories.map((category) => (
-            <ListItemButton
-              key={category.id}
-              onMouseEnter={(e) => handleMouseEnter(e, category)}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                "&:hover": { bgcolor: "#f5f5f5" },
-              }}
-            >
-              <ListItemText
-                primary={
-                  <Typography fontWeight="bold" fontSize="0.95rem">
-                    {category.name}
-                  </Typography>
-                }
-              />
-              {category.subcategories?.length > 0 && (
-                <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
-              )}
-            </ListItemButton>
-          ))}
+          {Categories.map((category) => {
+            const filteredSubs = (category.subcategories || []).filter(
+              (sub) => sub && sub !== "null" && sub !== "nill"
+            );
+            const hasSubs = filteredSubs.length > 0;
+            const isSale = String(category.name).toLowerCase() === "sale";
+
+            return (
+              <ListItemButton
+                key={category.id}
+                onMouseEnter={(e) => hasSubs && handleMouseEnter(e, category)}
+                onClick={() => {
+                  if (!hasSubs) {
+                    navigate(`/category/${encodeURIComponent(category.name)}`);
+                    handleDrawerToggle();
+                  }
+                }}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  "&:hover": { bgcolor: "#f5f5f5" },
+                }}
+              >
+                <ListItemText
+                  primary={
+                    <Typography
+                      fontWeight="bold"
+                      fontSize="0.95rem"
+                      sx={{ color: isSale ? "#b22222" : "inherit" }}
+                    >
+                      {category.name}
+                    </Typography>
+                  }
+                />
+                {hasSubs && (
+                  <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
+                )}
+              </ListItemButton>
+            );
+          })}
         </List>
 
         {/* Drawer Footer */}
@@ -492,11 +510,7 @@ const Header = () => {
                 <Button
                   key={index}
                   component={NavLink}
-                  to={`/category/${hoveredCategory.name
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")}/${sub
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")}`}
+                  to={`/category/${encodeURIComponent(hoveredCategory.name)}?subcategory=${encodeURIComponent(sub)}`}
                   onClick={handleDrawerToggle}
                   sx={{
                     justifyContent: "flex-start",

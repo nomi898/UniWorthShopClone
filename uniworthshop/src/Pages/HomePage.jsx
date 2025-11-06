@@ -15,7 +15,7 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import CategoryGrid from "../Components/HeroSection/CategoryGrid";
+import CategoryGrid from "../Components/Sections/CategoryGrid";
 import ExclusiveProducts from "../Components/Sections/exclusiveProducts";
 import "../App.css";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";

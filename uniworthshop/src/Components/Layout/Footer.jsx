@@ -9,6 +9,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ColoredLogo from '../../assets/Images/logocolored.png';
+import GoogleApp from "../../assets/Images/GoogleApp.webp"
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -204,7 +205,7 @@ const Footer = () => {
               </Box>
               <Box
                 component="img"
-                src="/google-play-badge.png"
+                src={GoogleApp}
                 alt="Get it on Google Play"
                 sx={{ width: 150, mt: 1, cursor: "pointer" }}
               />

@@ -25,11 +25,20 @@ const CategoryPage = () => {
   const searchParams = new URLSearchParams(location.search);
   const subcategoryName = searchParams.get("subcategory");
 
+  const isSaleCategory = String(categoryName).toUpperCase() === "SALE";
+
   const categoryData = products.find((cat) => cat.name === categoryName);
   const subcategoryData = categoryData?.subcategories.find(
     (sub) => sub.name === subcategoryName
   );
-  const productsToDisplay = subcategoryData?.products || [];
+
+  // If SALE category, aggregate all products with isSale === true across all categories
+  const productsToDisplay = isSaleCategory
+    ? products
+        .flatMap((cat) => cat.subcategories)
+        .flatMap((sub) => sub.products)
+        .filter((p) => p?.isSale)
+    : subcategoryData?.products || [];
 
   // Filter options
   const brands = ["Uniworth", "Uniworth Black"];
@@ -104,7 +113,7 @@ const CategoryPage = () => {
 
         {/* Subcategory Title */}
         <h3 style={{ marginBottom: "20px", fontWeight: "normal", textAlign: "center" }}>
-          {subcategoryName}
+          {isSaleCategory ? "Sale" : subcategoryName}
         </h3>
 
         {/* Top Menu: Filter | Item Count | Sort */}
@@ -241,10 +250,15 @@ const CategoryPage = () => {
         {/* Product Grid */}
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "repeat(2, minmax(0, 1fr))",
+              sm: "repeat(2, minmax(0, 1fr))",
+              md: "repeat(3, minmax(0, 1fr))",
+              lg: "repeat(4, minmax(0, 1fr))",
+            },
             gap: 3,
-            justifyContent: "center",
+            justifyItems: "center",
             px: { xs: 2, sm: 4, md: 6 },
             py: 4,
           }}
@@ -257,8 +271,7 @@ const CategoryPage = () => {
                 style={{
                   textDecoration: "none",
                   color: "inherit",
-                  flex: "1 1 calc(33.33% - 16px)",
-                  maxWidth: "300px",
+                  width: "100%",
                 }}
               >
                 <Box
