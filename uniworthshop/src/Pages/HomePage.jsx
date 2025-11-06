@@ -65,29 +65,29 @@ const HomePage = () => {
   ];
 
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         width: "100%",
         maxWidth: "100vw",
         overflowX: "hidden",
-        position: "relative"
+        position: "relative",
       }}
     >
       {/* Hero section */}
-      <Box 
-        sx={{ 
-          position: "relative", 
+      <Box
+        sx={{
+          position: "relative",
           width: "100%",
           maxWidth: "100%",
           overflow: "hidden",
           margin: 0,
-          padding: 0
+          padding: 0,
         }}
       >
         {/* Hero slider */}
-        <Box 
-          sx={{ 
-            position: "relative", 
+        <Box
+          sx={{
+            position: "relative",
             width: "100%",
             maxWidth: "100%",
             overflow: "hidden",
@@ -97,17 +97,17 @@ const HomePage = () => {
               width: "100%",
               maxWidth: "100%",
               margin: 0,
-              padding: 0
+              padding: 0,
             },
             "& .swiper-wrapper": {
               width: "100%",
-              maxWidth: "100%"
+              maxWidth: "100%",
             },
             "& .swiper-slide": {
               width: "100%",
               maxWidth: "100%",
-              overflow: "hidden"
-            }
+              overflow: "hidden",
+            },
           }}
         >
           <Swiper
@@ -121,23 +121,23 @@ const HomePage = () => {
             simulateTouch={true}
             grabCursor={true}
             centeredSlides={true}
-            style={{ 
-              width: "100%", 
+            style={{
+              width: "100%",
               maxWidth: "100%",
               margin: 0,
               padding: 0,
-              overflow: "hidden"
+              overflow: "hidden",
             }}
           >
             {heroImages.map((img, index) => (
-              <SwiperSlide 
+              <SwiperSlide
                 key={index}
-                style={{ 
+                style={{
                   width: "100%",
                   maxWidth: "100%",
                   overflow: "hidden",
                   margin: 0,
-                  padding: 0
+                  padding: 0,
                 }}
               >
                 <NavLink
@@ -146,36 +146,41 @@ const HomePage = () => {
                   )}?subcategory=${encodeURIComponent(
                     heroLinks[index].subcategory
                   )}`}
-                  style={{ 
-                    display: "block", 
+                  style={{
+                    display: "block",
                     width: "100%",
                     maxWidth: "100%",
                     overflow: "hidden",
                     margin: 0,
-                    padding: 0
+                    padding: 0,
                   }}
                 >
                   <Box
-                    component="img"
-                    src={img}
-                    alt={`Hero Background ${index + 1}`}
+                    display="flex"
+                    flexWrap="wrap"
+                    justifyContent="center"
+                    alignItems="center"
                     sx={{
                       width: "100%",
-                      maxWidth: "100%",
-                      height: {
-                        xs: "700px",
-                        sm: "600px",
-                        md: "700px",
-                        lg: "1500px",
-                      },
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      cursor: "pointer",
-                      display: "block",
-                      margin: 0,
-                      padding: 0
+                      overflow: "hidden",
                     }}
-                  />
+                  >
+                    <Box
+                      component="img"
+                      src={img}
+                      alt={`Hero Background ${index + 1}`}
+                      sx={{
+                        width: "100%",
+                        height: "auto",
+                        maxWidth: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                        display: "block",
+                        flexShrink: 1, //  shrink naturally with flex
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Box>
                 </NavLink>
               </SwiperSlide>
             ))}
@@ -196,14 +201,18 @@ const HomePage = () => {
           }}
         ></Box>
       </Box>
-      
+
       {/* Category Grid */}
-      <Box sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}>
+      <Box
+        sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}
+      >
         <CategoryGrid />
       </Box>
-      
+
       {/* NewArrivalsGrid  */}
-      <Box sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}>
+      <Box
+        sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}
+      >
         <Box sx={{ textAlign: "center", py: 3 }}>
           <Typography
             variant="h2"
@@ -238,7 +247,7 @@ const HomePage = () => {
 
       <AccessoriesSection />
       <ExclusiveProducts />
-      
+
       {/* SHIPPING PAYMENT QUALITY */}
       <Box
         sx={{
@@ -250,7 +259,7 @@ const HomePage = () => {
           maxWidth: "100%",
           boxSizing: "border-box",
           overflow: "hidden",
-          margin: 0
+          margin: 0,
         }}
       >
         <Grid
@@ -260,7 +269,7 @@ const HomePage = () => {
             display: "flex",
             flexWrap: { xs: "wrap", sm: "nowrap" },
             justifyContent: "space-between",
-            maxWidth: "100%"
+            maxWidth: "100%",
           }}
         >
           {[
@@ -317,12 +326,13 @@ const HomePage = () => {
           ))}
         </Grid>
       </Box>
-      
+
       {/* categories at the end  */}
-      <Box sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}>
+      <Box
+        sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}
+      >
         <RatioPotrait />
       </Box>
-
     </Box>
   );
 };

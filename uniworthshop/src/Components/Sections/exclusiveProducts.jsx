@@ -89,19 +89,13 @@ const ExclusiveProducts = () => {
       {/* Products Flexbox */}
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 3,
-          justifyContent: "center",
-          px: { xs: 2, sm: 4, md: 6 },
-          py: 4,
-            // FOR CARD NUMBER IN ROW 
+            // FOR CARD NUMBER IN COLUMN 
             display: "grid",
             gridTemplateColumns: {
               xs: "repeat(2, minmax(0, 1fr))",
               sm: "repeat(2, minmax(0, 1fr))",
               md: "repeat(3, minmax(0, 1fr))",
-              lg: "repeat(4, minmax(0, 1fr))",
+              lg: "repeat(3, minmax(0, 1fr))",
             },
             gap: 3,
             justifyItems: "center",
