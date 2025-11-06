@@ -204,22 +204,25 @@ const HomePage = () => {
       
       {/* NewArrivalsGrid  */}
       <Box sx={{ width: "100%", maxWidth: "100%", overflow: "hidden", margin: 0 }}>
-        <Typography
-          sx={{
-            fontSize: {
-              xs: "18px",
-              sm: "20px",
-              md: "24px",
-              lg: "28px",
-              xl: "32px",
-            },
-          }}
-        >
-          <h2
-            style={{ textAlign: "center", margin: "0", fontWeight: "normal" }}
+        <Box sx={{ textAlign: "center", py: 3 }}>
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{
+              fontSize: {
+                xs: "18px",
+                sm: "20px",
+                md: "24px",
+                lg: "28px",
+                xl: "32px",
+              },
+              fontWeight: "normal",
+              margin: 0,
+              mb: 2,
+            }}
           >
             New Arrivals
-          </h2>
+          </Typography>
           <Divider
             sx={{
               width: 70,
@@ -229,7 +232,7 @@ const HomePage = () => {
               mx: "auto",
             }}
           />
-        </Typography>
+        </Box>
         <NewArrivalsGrid />
       </Box>
 
@@ -287,7 +290,6 @@ const HomePage = () => {
             },
           ].map((item, index) => (
             <Grid
-              item
               key={index}
               sx={{
                 width: { xs: "100%", sm: "33.33%" },
@@ -321,7 +323,6 @@ const HomePage = () => {
         <RatioPotrait />
       </Box>
 
-      {/* <Footer /> */}
     </Box>
   );
 };

@@ -210,8 +210,8 @@ export default function ShoppingCart() {
               </Button>
               <a href="/checkout" style={{ flex: 1, textDecoration: 'none' }}>
                 <Button sx={{ width: '100%', backgroundColor: '#e74c3c', color: '#fff', padding: '16px', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '500' }}>
-                  CHECKOUT
-                </Button>
+                CHECKOUT
+              </Button>
               </a>
             </Box>
           </Box>

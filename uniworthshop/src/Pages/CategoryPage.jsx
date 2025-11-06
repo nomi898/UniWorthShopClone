@@ -346,9 +346,11 @@ const CategoryPage = () => {
                       </IconButton>
 
                       <IconButton
-                        component={NavLink}
-                        to="/signin"
-                        onClick={(e) => { e.stopPropagation(); }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          navigate('/signin');
+                        }}
                         sx={{
                           backgroundColor: "white",
                           "&:hover": { backgroundColor: "#f3f4f6" },

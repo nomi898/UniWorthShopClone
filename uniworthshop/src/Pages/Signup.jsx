@@ -4,8 +4,6 @@ import { Link, NavLink } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Header from "../Components/Layout/Header"; 
-import Footer from "../Components/Layout/Footer"; 
 
 const registerSchema = yup
   .object({
@@ -47,11 +45,9 @@ const Register = () => {
 
   return (
     <>
-      {/* Header */}
-      <Header />
 
       {/* Main Content */}
-      <Box sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh', pt: '120px', pb: 8 }}>
+      <Box sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh', pt: '20px', pb: 8 }}>
         <Container maxWidth="xl" sx={{ px: { xs: 2, md: 8 } }}>
           {/* Breadcrumb */}
           <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -367,9 +363,6 @@ const Register = () => {
           </Box>
         </Container>
       </Box>
-
-      {/* Footer */}
-      <Footer />
     </>
   );
 };

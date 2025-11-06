@@ -57,22 +57,18 @@ const TopHeader = () => {
           }}
         >
           <Link
+            component={NavLink}
+            to="/signin"
+            underline="none"
+            color="inherit"
             sx={{
               display: "inline-flex",
               alignItems: "center",
               gap: 1,
-              textDecoration: "none",
-              color: "black",
             }}
-            href="#"
           >
             <PersonOutlineIcon />
-            <NavLink
-              to="/signin"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <Typography sx={{ fontSize: 14 }}>My Account</Typography>
-            </NavLink>
+            <Typography sx={{ fontSize: 14, color: "black" }}>My Account</Typography>
           </Link>
         </Box>
       </Box>

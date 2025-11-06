@@ -28,11 +28,12 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           {/* Search results */}
           <Route path="search" element={<SearchResults />} />
+          {/* Auth under layout so header/topbar appear */}
+          <Route path="register" element={<Signup />}></Route>
+          <Route path="signin" element={<Signin />}></Route>
         </Route>
 
-        {/* auth  */}
-        <Route path="/register" element={<Signup />}></Route>
-        <Route path="/signin" element={<Signin />}></Route>
+        {/* legacy external auth routes (optional redirect) removed */}
       </Routes>
     </BrowserRouter>
   );

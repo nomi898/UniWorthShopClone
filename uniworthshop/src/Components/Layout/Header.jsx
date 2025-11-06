@@ -202,25 +202,25 @@ const Header = () => {
                 </Button>
               </Box>
             ) : (
-              <Button
+            <Button
                 onClick={() => setShowSearch(true)}
-                sx={{
-                  color: scrolled ? "black" : "white",
-                  px: 2,
-                  py: 1,
-                  borderRadius: 1,
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: scrolled
-                      ? "#f2f2f2"
-                      : "rgba(255,255,255,0.1)",
-                  },
+              sx={{
+                color: scrolled ? "black" : "white",
+                px: 2,
+                py: 1,
+                borderRadius: 1,
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: scrolled
+                    ? "#f2f2f2"
+                    : "rgba(255,255,255,0.1)",
+                },
                   display: { xs: "none", md: "inline-flex" },
-                }}
-                startIcon={<SearchIcon />}
-              >
-                Search
-              </Button>
+              }}
+              startIcon={<SearchIcon />}
+            >
+              Search
+            </Button>
             )}
 
             {/* BAG WITH DROPDOWN */}
@@ -435,8 +435,8 @@ const Header = () => {
             const isSale = String(category.name).toLowerCase() === "sale";
 
             return (
-              <ListItemButton
-                key={category.id}
+            <ListItemButton
+              key={category.id}
                 onMouseEnter={(e) => hasSubs && handleMouseEnter(e, category)}
                 onClick={() => {
                   if (!hasSubs) {
@@ -444,13 +444,13 @@ const Header = () => {
                     handleDrawerToggle();
                   }
                 }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  "&:hover": { bgcolor: "#f5f5f5" },
-                }}
-              >
-                <ListItemText
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                "&:hover": { bgcolor: "#f5f5f5" },
+              }}
+            >
+              <ListItemText
                   primary={
                     <Typography
                       fontWeight="bold"
@@ -462,9 +462,9 @@ const Header = () => {
                   }
                 />
                 {hasSubs && (
-                  <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
-                )}
-              </ListItemButton>
+                <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
+              )}
+            </ListItemButton>
             );
           })}
         </List>

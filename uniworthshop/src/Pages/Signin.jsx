@@ -11,8 +11,6 @@ import { Link, NavLink } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Header from "../Components/Layout/Header";
-
 
 const siginSchema = yup
   .object({
@@ -45,12 +43,10 @@ const Signin = () => {
       sx={{
         backgroundColor: "#f5f5f5",
         minHeight: "100vh",
-        pt: "120px",
+        pt: "30px",
         pb: 8,
       }}
     >
-      
-      < Header />
       <Container maxWidth="lg">
         {/* Breadcrumb */}
         <Box sx={{ mb: 4, display: "flex", alignItems: "center", gap: 1 }}>
@@ -246,7 +242,6 @@ const Signin = () => {
           </Box>
         </Box>
       </Container>
-      <Footer />
     </Box>
   );
 };

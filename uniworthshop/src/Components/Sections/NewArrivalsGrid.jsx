@@ -168,12 +168,12 @@ const NewArrivalsGrid = () => {
                         <Search sx={{ color: "#1f2937", fontSize: 20 }} />
                       </IconButton>
 
-                      {/* Wishlist */}
+                      {/* Wishlist - FIXED: removed component={NavLink} */}
                       <IconButton
-                        component={NavLink}
-                        to="/signin"
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
+                          navigate('/signin');
                         }}
                         sx={{
                           backgroundColor: "white",
