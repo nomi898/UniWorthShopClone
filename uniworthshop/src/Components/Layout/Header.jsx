@@ -67,7 +67,7 @@ const Header = () => {
     setSubmenuPosition({ top: rect.top });
     setHoveredCategory(category);
   };
-
+//mouse leaves the category submenu
   const handleMouseLeave = () => setHoveredCategory(null);
 
   return (
