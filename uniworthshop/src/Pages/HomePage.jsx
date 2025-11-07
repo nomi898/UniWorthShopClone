@@ -186,7 +186,7 @@ const HomePage = () => {
             ))}
           </Swiper>
         </Box>
-        {/* Header + HeroSection overlay above Swiper */}
+        {/* Header overlay above Swiper */}
         <Box
           sx={{
             position: "absolute",

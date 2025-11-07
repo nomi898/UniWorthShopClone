@@ -7,8 +7,7 @@ import ethnic from '../../assets/Images/ethnic.jpg';
 const RatioPotrait = () => {
   return (
     <Box sx={{ py: 6 }}>
-      <Grid 
-      
+      <Grid
       container spacing={2} justifyContent="center" sx={{ mx: 2 }}>
 
         {/* Made To Measure */}
@@ -16,7 +15,7 @@ const RatioPotrait = () => {
           <Box
             sx={{
               position: "relative",
-              height: { xs: 300, sm: 300, md: 400, lg: 550, xl: 700 },
+              height: { xs: 300, sm: 300, md: 500, lg: 900, xl: 1300 },
               overflow: "hidden",
               "&:hover img": { transform: "scale(1.05)" },
             }}
@@ -75,7 +74,7 @@ const RatioPotrait = () => {
           <Box
             sx={{
               position: "relative",
-              height: { xs: 300, sm: 300, md: 400, lg: 550, xl: 700 },
+              height: { xs: 300, sm: 300, md: 500, lg: 900, xl: 1300 },
               overflow: "hidden",
               "&:hover img": { transform: "scale(1.05)" },
             }}
@@ -134,7 +133,7 @@ const RatioPotrait = () => {
           <Box
             sx={{
               position: "relative",
-              height: { xs: 500, sm: 500, md: 400, lg: 550, xl: 700 },
+              height: { xs: 500, sm: 500, md: 500, lg: 900, xl: 1300 },
               overflow: "hidden",
               "&:hover img": { transform: "scale(1.05)" },
               margin: { xs: '0 auto', md: 0 },
