@@ -18,7 +18,7 @@ const ProductQuickView = ({ open, onClose, product, viewOnly = false }) => {
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
 
-  const sizes = ["M", "L", "XL"];
+  const sizes = ["S","M", "L", "XL"];
 
   // single dispatch with quantity
   const handleAddToCart = () => {
@@ -50,8 +50,8 @@ const ProductQuickView = ({ open, onClose, product, viewOnly = false }) => {
       onClose={onClose}
       maxWidth="md"
       fullWidth
-      PaperProps={{
-        sx: {
+      sx={{
+        "& .MuiPaper-root": {
           borderRadius: 0,
           maxWidth: "1000px",
         },

@@ -3,8 +3,16 @@ import { Box, Grid, Typography } from "@mui/material";
 import MTM from '../../assets/Images/MTM.jpg';
 import uniblack from '../../assets/Images/uniblack.jpg';
 import ethnic from '../../assets/Images/ethnic.jpg';
+import { useNavigate } from "react-router";
 
 const RatioPotrait = () => {
+
+  const navigate = useNavigate();
+
+const handleNavigate = (categoryName) => {
+  navigate(`/category/${encodeURIComponent(categoryName)}`);
+};
+
   return (
     <Box sx={{ py: 6 }}>
       <Grid
@@ -19,6 +27,7 @@ const RatioPotrait = () => {
               overflow: "hidden",
               "&:hover img": { transform: "scale(1.05)" },
             }}
+            onClick={() => handleNavigate("Made To Measure")}
           >
             <Box
               component="img"
@@ -78,6 +87,7 @@ const RatioPotrait = () => {
               overflow: "hidden",
               "&:hover img": { transform: "scale(1.05)" },
             }}
+            onClick={() => handleNavigate("Uniworth Black")}
           >
             <Box
               component="img"
@@ -139,6 +149,7 @@ const RatioPotrait = () => {
               margin: { xs: '0 auto', md: 0 },
               maxWidth: { xs: '90%', md: '100%' },
             }}
+            onClick={() => handleNavigate("Ethnic")}
           >
             <Box
               component="img"

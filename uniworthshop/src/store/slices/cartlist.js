@@ -2,8 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 import products from "../../DummyData/Products";
 
 const initialState = {
-  products: products, //  product list access
-  items: [], //   all cart items
+  products: products,
+  items: [],
+  subtotal: 0,
+  itemCount: 0,
+};
+
+const calculateTotals = (state) => {
+  state.subtotal = state.items.reduce(
+    (acc, item) => acc + item.price * (item.quantity || 1),
+    0
+  );
+  state.itemCount = state.items.reduce(
+    (acc, item) => acc + (item.quantity || 1),
+    0
+  );
 };
 
 export const cartlistSlice = createSlice({
@@ -12,25 +25,21 @@ export const cartlistSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const item = action.payload;
-      
-      //  Check both id AND size to handle different sizes separately
       const existingItem = state.items.find(
         (prod) => prod.id === item.id && prod.size === item.size
       );
 
       if (existingItem) {
-        // If item already exists with same size, increase quantity
         existingItem.quantity += item.quantity || 1;
       } else {
-        // Otherwise, add new item with size
         state.items.push({ ...item, quantity: item.quantity || 1 });
       }
+
+      calculateTotals(state);
     },
 
     removeFromCart: (state, action) => {
       const item = action.payload;
-      
-      //  Check both id AND size
       const existingItem = state.items.find(
         (prod) => prod.id === item.id && prod.size === item.size
       );
@@ -39,25 +48,27 @@ export const cartlistSlice = createSlice({
         if (existingItem.quantity > 1) {
           existingItem.quantity -= 1;
         } else {
-          // Remove item if quantity becomes 0
           state.items = state.items.filter(
             (prod) => !(prod.id === item.id && prod.size === item.size)
           );
         }
       }
+
+      calculateTotals(state);
     },
 
     deleteFromCart: (state, action) => {
       const item = action.payload;
-      
-      //  Check both id AND size when deleting
       state.items = state.items.filter(
         (prod) => !(prod.id === item.id && prod.size === item.size)
       );
+
+      calculateTotals(state);
     },
 
     clearCart: (state) => {
       state.items = [];
+      calculateTotals(state);
     },
   },
 });

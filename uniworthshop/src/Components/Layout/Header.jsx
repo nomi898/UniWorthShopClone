@@ -38,19 +38,13 @@ const Header = () => {
   const isHomePage = location.pathname === "/";
   const dispatch = useDispatch();
 
-  // ✅ Read cart items from the correct reducer key
-  const cartItems = useSelector((state) => state?.cart?.items || []);
+// cart
+  const cart = useSelector((state) => state?.cart);
+  const cartItems = cart?.items || [];
+  const subtotal = cart?.subtotal || 0;
+  const itemCount = cart?.itemCount || 0;
 
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * (item.quantity || 1),
-    0
-  );
-  const itemCount = cartItems.reduce(
-    (acc, item) => acc + (item.quantity || 1),
-    0
-  );
-
-  //  Scroll effect for homepage
+  // Scroll effect for homepage
   useEffect(() => {
     if (!isHomePage) {
       setScrolled(true);
@@ -60,12 +54,14 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
-// drawer of side menu 
+
+  // Drawer toggle
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
     setHoveredCategory(null);
   };
-// opening of submenu 
+
+  // Submenu positioning
   const handleMouseEnter = (event, category) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setSubmenuPosition({ top: rect.top });
@@ -202,25 +198,25 @@ const Header = () => {
                 </Button>
               </Box>
             ) : (
-            <Button
+              <Button
                 onClick={() => setShowSearch(true)}
-              sx={{
-                color: scrolled ? "black" : "white",
-                px: 2,
-                py: 1,
-                borderRadius: 1,
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: scrolled
-                    ? "#f2f2f2"
-                    : "rgba(255,255,255,0.1)",
-                },
+                sx={{
+                  color: scrolled ? "black" : "white",
+                  px: 2,
+                  py: 1,
+                  borderRadius: 1,
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: scrolled
+                      ? "#f2f2f2"
+                      : "rgba(255,255,255,0.1)",
+                  },
                   display: { xs: "none", md: "inline-flex" },
-              }}
-              startIcon={<SearchIcon />}
-            >
-              Search
-            </Button>
+                }}
+                startIcon={<SearchIcon />}
+              >
+                Search
+              </Button>
             )}
 
             {/* BAG WITH DROPDOWN */}
@@ -280,7 +276,7 @@ const Header = () => {
                     <>
                       {cartItems.map((item, idx) => (
                         <Box
-                          key={idx}
+                          key={`${item.id}-${item.size}-${idx}`}
                           sx={{
                             display: "flex",
                             alignItems: "flex-start",
@@ -288,7 +284,7 @@ const Header = () => {
                             mb: 1.5,
                           }}
                         >
-                          <Box sx={{ display: "flex", gap: 1 }}>
+                          <Box sx={{ display: "flex", gap: 1, flex: 1 }}>
                             <Box
                               component="img"
                               src={item.image}
@@ -312,11 +308,11 @@ const Header = () => {
                               <Typography sx={{ fontSize: 13, color: "#555" }}>
                                 Qty: {item.quantity || 1}
                               </Typography>
+                              <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 0.5 }}>
+                                Rs.{(item.price * (item.quantity || 1)).toLocaleString()}
+                              </Typography>
                             </Box>
                           </Box>
-                          <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                            Rs.{item.price * (item.quantity || 1)}
-                          </Typography>
                           <IconButton
                             size="small"
                             onClick={() => dispatch(deleteFromCart(item))}
@@ -435,8 +431,8 @@ const Header = () => {
             const isSale = String(category.name).toLowerCase() === "sale";
 
             return (
-            <ListItemButton
-              key={category.id}
+              <ListItemButton
+                key={category.id}
                 onMouseEnter={(e) => hasSubs && handleMouseEnter(e, category)}
                 onClick={() => {
                   if (!hasSubs) {
@@ -444,13 +440,13 @@ const Header = () => {
                     handleDrawerToggle();
                   }
                 }}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                "&:hover": { bgcolor: "#f5f5f5" },
-              }}
-            >
-              <ListItemText
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  "&:hover": { bgcolor: "#f5f5f5" },
+                }}
+              >
+                <ListItemText
                   primary={
                     <Typography
                       fontWeight="bold"
@@ -462,9 +458,9 @@ const Header = () => {
                   }
                 />
                 {hasSubs && (
-                <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
-              )}
-            </ListItemButton>
+                  <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
+                )}
+              </ListItemButton>
             );
           })}
         </List>

@@ -11,9 +11,6 @@ import { useDispatch } from "react-redux";
 import ProductQuickView from "../Sections/ProductQuickView";
 
 const NewArrivalsGrid = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [quickViewOpen, setQuickViewOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [viewOnlyQuick, setViewOnlyQuick] = useState(false);
@@ -29,8 +26,8 @@ const NewArrivalsGrid = () => {
   const handleQuickView = (e, product) => {
     // prevent NavLink navigation when clicking icons
     if (e) {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); // stop NavLink navigation
+      e.stopPropagation(); // stop click from bubbling to NavLink
     }
     setSelectedProduct(product);
     setViewOnlyQuick(false);
@@ -54,7 +51,7 @@ const NewArrivalsGrid = () => {
     e.stopPropagation();
     console.log("Add to wishlist:", productId);
   };
-
+// closed quick modal 
   const handleCloseQuickView = () => {
     setQuickViewOpen(false);
     setSelectedProduct(null);
@@ -134,7 +131,7 @@ const NewArrivalsGrid = () => {
                         opacity: 0,
                         transition: "all 0.3s ease",
                         paddingRight: 2,
-                        // overlay sits above link hit area
+                        // higher sits on top
                         zIndex: 2,
                       }}
                     >
@@ -168,7 +165,7 @@ const NewArrivalsGrid = () => {
                         <Search sx={{ color: "#1f2937", fontSize: 20 }} />
                       </IconButton>
 
-                      {/* Wishlist - FIXED: removed component={NavLink} */}
+                      {/* Wishlist  */}
                       <IconButton
                         onClick={(e) => {
                           e.preventDefault();
