@@ -29,7 +29,7 @@ import Footer from "../Components/Layout/Footer";
 
 // Desktop & Mobile hero images
 import HeroSectionImage from "../assets/Images/herosectionimage.jpg";
-import HeroSectionImagemobile from "../assets/Images/HeroSectionImagemobile.jpg";
+import HeroSectionImagemobile from "../assets/Images/heroSectionImagemobile.jpg";
 import hero2 from "../assets/Images/hero2.jpg";
 import hero2mobile from "../assets/Images/hero2mobile.jpg";
 import hero3 from "../assets/Images/hero3.jpg";
