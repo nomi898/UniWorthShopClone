@@ -9,11 +9,11 @@ import cat6 from "../../assets/Images/cat6.jpg";
 
 const heroLinks = [
   { category: "WINTER COLLECTION", subcategory: "Sweaters", image: cat1 },
-  { category: "WINTER COLLECTION", subcategory: "Hoodies", image: cat2 },
-  { category: "SHIRTS", subcategory: "Formal Shirts", image: cat3 },
-  { category: "ACCESSORIES", subcategory: "Fragrances", image: cat4 },
-  { category: "ACTIVE WEAR", subcategory: "Gym Wear", image: cat5 },
-  { category: "ETHNIC WEAR", subcategory: "Kurta Pajama", image: cat6 },
+  { category: "WINTER COLLECTION", subcategory: "SweatShirts", image: cat2 },
+  { category: "WINTER COLLECTION", subcategory: "Hoodies", image: cat3 },
+  { category: "Shirts", subcategory: "Formal Shirts", image: cat4 },
+  { category: "ACCESSORIES", subcategory: "Fragrances", image: cat5 },
+  { category: "ACTIVE WEAR", subcategory: "Gym Wear", image: cat6 },
 ];
 
 const CategoryGrid = () => {
