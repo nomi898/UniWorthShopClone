@@ -4,7 +4,7 @@ import BrownJacket from "../assets/Images/Products/BrownPlainButton-upChoreJacke
 import FormalShirt1 from "../assets/Images/Products/FormalShirt1.jpg";
 import FormalShirt2 from "../assets/Images/Products/FormalShirt2.jpg";
 import FormalTrouser1 from "../assets/Images/Products/FormalTrouser1.jpg";
-import Suit1 from "../assets/Images/Products/suit1.jpg";
+import Suit1 from "../assets/Images/Products/Suit1.jpg";
 import Kurta1 from "../assets/Images/Products/KurtaPajama1.jpg";
 import TrackSuit from "../assets/Images/Products/TrackSuit.jpg";
 import Pajama1 from "../assets/Images/Products/pajama1.jpg";
