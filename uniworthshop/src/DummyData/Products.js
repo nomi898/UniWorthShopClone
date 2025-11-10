@@ -2,7 +2,7 @@ import MustardSweater from "../assets/Images/Products/MustardPlainHalfZipperSwea
 import NavySweater from "../assets/Images/Products/NavyGeometricHighNeckSweater.jpg";
 import BrownJacket from "../assets/Images/Products/BrownPlainButton-upChoreJacket.jpg";
 import FormalShirt1 from "../assets/Images/Products/FormalShirt1.jpg";
-import FormalShirt2 from "../assets/Images/Products/formalshirt2.jpg";
+import FormalShirt2 from "../assets/Images/Products/Formalshirt2.jpg";
 import FormalTrouser1 from "../assets/Images/Products/FormalTrouser1.jpg";
 import Suit1 from "../assets/Images/Products/suit1.jpg";
 import Kurta1 from "../assets/Images/Products/KurtaPajama1.jpg";
