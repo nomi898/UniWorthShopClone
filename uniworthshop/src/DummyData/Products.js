@@ -7,7 +7,7 @@ import FormalTrouser1 from "../assets/Images/Products/FormalTrouser1.jpg";
 import Suit1 from "../assets/Images/Products/Suit1.jpg";
 import Kurta1 from "../assets/Images/Products/KurtaPajama1.jpg";
 import TrackSuit from "../assets/Images/Products/TrackSuit.jpg";
-import Pajama1 from "../assets/Images/Products/pajama1.jpg";
+import Pajama1 from "../assets/Images/Products/Pajama1.jpg";
 import BlackPajamaSet from "../assets/Images/Products/BlackPlainT-shirtPajamaSetWoven.jpg";
 import NavyBelt from "../assets/Images/Products/NavyPlainFormalBelt.jpg";
 import LinenShirt from "../assets/Images/Products/leninShirt.jpg";
