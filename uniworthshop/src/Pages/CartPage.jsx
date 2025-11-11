@@ -94,9 +94,7 @@ export default function ShoppingCart() {
   };
 
   const handleRemove = (item) => {
-    if (window.confirm('Are you sure you want to remove this item?')) {
-      dispatch(deleteFromCart(item));
-    }
+    dispatch(deleteFromCart(item));
   };
 
   return (
