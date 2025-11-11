@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -35,19 +35,19 @@ const Header = () => {
   const [cartHover, setCartHover] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [mobileOpenCategoryId, setMobileOpenCategoryId] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
   const dispatch = useDispatch();
 
+  // cart
   const cart = useSelector((state) => state?.cart);
   const cartItems = cart?.items || [];
   const subtotal = cart?.subtotal || 0;
   const itemCount = cart?.itemCount || 0;
 
-  // Scroll effect
+  // scroll effect
   useEffect(() => {
     if (!isHomePage) {
       setScrolled(true);
@@ -58,14 +58,17 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
 
-  // Drawer toggle
+  // drawer toggle
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
     setHoveredCategory(null);
-    setMobileOpenCategoryId(null);
   };
 
-  // Desktop submenu positioning
+  // MUI theme & mobile detection
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  // submenu positioning for desktop
   const handleMouseEnter = (event, category) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setSubmenuPosition({ top: rect.top });
@@ -73,9 +76,17 @@ const Header = () => {
   };
   const handleMouseLeave = () => setHoveredCategory(null);
 
-  // Mobile detection
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  // drawer ref for accessibility
+  const drawerRef = useRef(null);
+
+  useEffect(() => {
+    if (drawerOpen && drawerRef.current) {
+      const firstFocusable = drawerRef.current.querySelector(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      firstFocusable?.focus();
+    }
+  }, [drawerOpen]);
 
   return (
     <>
@@ -96,51 +107,25 @@ const Header = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: {
-              xs: scrolled ? "8px 12px" : "12px",
-              md: scrolled ? "10px 20px" : "20px",
-            },
+            padding: { xs: scrolled ? "8px 12px" : "12px", md: scrolled ? "10px 20px" : "20px" },
             backgroundColor: scrolled ? "white" : "transparent",
             transition: "all 0.3s ease",
             overflow: "visible",
             boxShadow: scrolled ? "0 2px 4px rgba(0,0,0,0.1)" : "none",
           }}
         >
-          {/* Menu icon & search */}
+          {/* Menu icon & mobile search */}
           <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              cursor: "pointer",
-            }}
+            sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
             onClick={handleDrawerToggle}
           >
-            <MenuIcon
-              sx={{
-                fontSize: { xs: 26, md: 30 },
-                color: scrolled ? "black" : "white",
-              }}
-            />
-            <Typography
-              sx={{
-                display: { xs: "none", md: "block" },
-                color: scrolled ? "black" : "white",
-                fontWeight: 500,
-              }}
-            >
+            <MenuIcon sx={{ fontSize: { xs: 26, md: 30 }, color: scrolled ? "black" : "white" }} />
+            <Typography sx={{ display: { xs: "none", md: "block" }, color: scrolled ? "black" : "white", fontWeight: 500 }}>
               Menu
             </Typography>
             <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowSearch((s) => !s);
-              }}
-              sx={{
-                ml: 1,
-                display: { xs: "inline-flex", md: "none" },
-                color: scrolled ? "black" : "white",
-              }}
+              onClick={(e) => { e.stopPropagation(); setShowSearch((s) => !s); }}
+              sx={{ ml: 1, display: { xs: "inline-flex", md: "none" }, color: scrolled ? "black" : "white" }}
             >
               <SearchIcon />
             </IconButton>
@@ -152,11 +137,7 @@ const Header = () => {
               <img
                 src={scrolled ? logoColored : logoWhite}
                 alt="Logo"
-                style={{
-                  width: scrolled ? 48 : 140,
-                  height: "auto",
-                  transition: "all 0.3s ease",
-                }}
+                style={{ width: scrolled ? 48 : 140, height: "auto", transition: "all 0.3s ease" }}
               />
             </NavLink>
           </Box>
@@ -171,68 +152,33 @@ const Header = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && searchText.trim()) {
-                      navigate(
-                        `/search?query=${encodeURIComponent(searchText.trim())}`
-                      );
+                      navigate(`/search?query=${encodeURIComponent(searchText.trim())}`);
                       setShowSearch(false);
                       setSearchText("");
                     }
                   }}
                   placeholder="Search products"
-                  style={{
-                    padding: "8px 10px",
-                    borderRadius: 6,
-                    border: "1px solid #ddd",
-                    width: 220,
-                  }}
+                  style={{ padding: "8px 10px", borderRadius: 6, border: "1px solid #ddd", width: 220 }}
                 />
                 <Button
                   onClick={() => {
                     if (!searchText.trim()) return;
-                    navigate(
-                      `/search?query=${encodeURIComponent(searchText.trim())}`
-                    );
+                    navigate(`/search?query=${encodeURIComponent(searchText.trim())}`);
                     setShowSearch(false);
                     setSearchText("");
                   }}
-                  sx={{
-                    color: "white",
-                    backgroundColor: "#b22222",
-                    px: 2,
-                    py: 1,
-                    borderRadius: 1,
-                    textTransform: "none",
-                    "&:hover": { backgroundColor: "#911b1b" },
-                  }}
+                  sx={{ color: "white", backgroundColor: "#b22222", px: 2, py: 1, borderRadius: 1, textTransform: "none", "&:hover": { backgroundColor: "#911b1b" } }}
                 >
                   Go
                 </Button>
-                <Button
-                  onClick={() => setShowSearch(false)}
-                  sx={{
-                    textTransform: "none",
-                    color: scrolled ? "black" : "white",
-                  }}
-                >
+                <Button onClick={() => setShowSearch(false)} sx={{ textTransform: "none", color: scrolled ? "black" : "white" }}>
                   Cancel
                 </Button>
               </Box>
             ) : (
               <Button
                 onClick={() => setShowSearch(true)}
-                sx={{
-                  color: scrolled ? "black" : "white",
-                  px: 2,
-                  py: 1,
-                  borderRadius: 1,
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: scrolled
-                      ? "#f2f2f2"
-                      : "rgba(255,255,255,0.1)",
-                  },
-                  display: { xs: "none", md: "inline-flex" },
-                }}
+                sx={{ color: scrolled ? "black" : "white", px: 2, py: 1, borderRadius: 1, textTransform: "none", "&:hover": { backgroundColor: scrolled ? "#f2f2f2" : "rgba(255,255,255,0.1)" }, display: { xs: "none", md: "inline-flex" } }}
                 startIcon={<SearchIcon />}
               >
                 Search
@@ -240,163 +186,47 @@ const Header = () => {
             )}
 
             {/* BAG */}
-            <Box
-              sx={{ position: "relative" }}
-              onMouseEnter={() => setCartHover(true)}
-              onMouseLeave={() => setCartHover(false)}
-            >
+            <Box sx={{ position: "relative" }} onMouseEnter={() => !isMobile && setCartHover(true)} onMouseLeave={() => !isMobile && setCartHover(false)}>
               <Button
-                sx={{
-                  color: scrolled ? "black" : "white",
-                  px: 2,
-                  py: 1,
-                  borderRadius: 1,
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: scrolled
-                      ? "#f2f2f2"
-                      : "rgba(255,255,255,0.1)",
-                  },
-                }}
-                startIcon={
-                  <Badge
-                    color="warning"
-                    badgeContent={itemCount}
-                    invisible={itemCount === 0}
-                    overlap="circular"
-                  >
-                    <AddShoppingCartIcon />
-                  </Badge>
-                }
+                sx={{ color: scrolled ? "black" : "white", px: 2, py: 1, borderRadius: 1, textTransform: "none", "&:hover": { backgroundColor: scrolled ? "#f2f2f2" : "rgba(255,255,255,0.1)" } }}
+                startIcon={<Badge color="warning" badgeContent={itemCount} invisible={itemCount === 0} overlap="circular"><AddShoppingCartIcon /></Badge>}
               >
                 <Box sx={{ display: { xs: "none", md: "block" } }}>Bag</Box>
               </Button>
 
-              {cartHover && (
+              {/* CART DROPDOWN */}
+              {cartHover && !isMobile && (
                 <Paper
                   elevation={6}
-                  sx={{
-                    position: "absolute",
-                    right: 0,
-                    top: "100%",
-                    mt: 1,
-                    width: 340,
-                    p: 2,
-                    zIndex: 2000,
-                    borderRadius: 2,
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-                  }}
+                  sx={{ position: "absolute", right: 0, top: "100%", mt: 1, width: 340, p: 2, zIndex: 2000, borderRadius: 2, boxShadow: "0 4px 20px rgba(0,0,0,0.15)" }}
                 >
                   {cartItems.length === 0 ? (
-                    <Typography sx={{ textAlign: "center", py: 3 }}>
-                      Your bag is empty
-                    </Typography>
+                    <Typography sx={{ textAlign: "center", py: 3 }}>Your bag is empty</Typography>
                   ) : (
                     <>
                       {cartItems.map((item, idx) => (
-                        <Box
-                          key={`${item.id}-${item.size}-${idx}`}
-                          sx={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            justifyContent: "space-between",
-                            mb: 1.5,
-                          }}
-                        >
+                        <Box key={`${item.id}-${item.size}-${idx}`} sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", mb: 1.5 }}>
                           <Box sx={{ display: "flex", gap: 1, flex: 1 }}>
-                            <Box
-                              component="img"
-                              src={item.image}
-                              alt={item.name}
-                              sx={{
-                                width: 60,
-                                height: 60,
-                                borderRadius: 1,
-                                objectFit: "cover",
-                              }}
-                            />
+                            <Box component="img" src={item.image} alt={item.name} sx={{ width: 60, height: 60, borderRadius: 1, objectFit: "cover" }} />
                             <Box>
-                              <Typography
-                                sx={{ fontSize: 14, fontWeight: 500 }}
-                              >
-                                {item.name}
-                              </Typography>
-                              <Typography sx={{ fontSize: 13, color: "#555" }}>
-                                Size: {item.size || "-"}
-                              </Typography>
-                              <Typography sx={{ fontSize: 13, color: "#555" }}>
-                                Qty: {item.quantity || 1}
-                              </Typography>
-                              <Typography
-                                sx={{ fontSize: 14, fontWeight: 500, mt: 0.5 }}
-                              >
-                                Rs.
-                                {(
-                                  item.price * (item.quantity || 1)
-                                ).toLocaleString()}
-                              </Typography>
+                              <Typography sx={{ fontSize: 14, fontWeight: 500 }}>{item.name}</Typography>
+                              <Typography sx={{ fontSize: 13, color: "#555" }}>Size: {item.size || "-"}</Typography>
+                              <Typography sx={{ fontSize: 13, color: "#555" }}>Qty: {item.quantity || 1}</Typography>
+                              <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 0.5 }}>Rs.{(item.price * (item.quantity || 1)).toLocaleString()}</Typography>
                             </Box>
                           </Box>
-                          <IconButton
-                            size="small"
-                            onClick={() => dispatch(deleteFromCart(item))}
-                          >
+                          <IconButton size="small" onClick={() => dispatch(deleteFromCart(item))}>
                             <CloseIcon sx={{ fontSize: 16 }} />
                           </IconButton>
                         </Box>
                       ))}
                       <Divider sx={{ my: 1 }} />
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          fontSize: 14,
-                        }}
-                      >
-                        <Typography>Shipping</Typography>
-                        <Typography>Rs. 0.00</Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          mt: 1,
-                          fontWeight: 600,
-                        }}
-                      >
-                        <Typography>Subtotal</Typography>
-                        <Typography>Rs.{subtotal.toLocaleString()}</Typography>
-                      </Box>
+                      <Box sx={{ display: "flex", justifyContent: "space-between", fontSize: 14 }}><Typography>Shipping</Typography><Typography>Rs. 0.00</Typography></Box>
+                      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1, fontWeight: 600 }}><Typography>Subtotal</Typography><Typography>Rs.{subtotal.toLocaleString()}</Typography></Box>
                       <Divider sx={{ my: 1 }} />
                       <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
-                        <Button
-                          fullWidth
-                          component={NavLink}
-                          to="/cart"
-                          variant="outlined"
-                          sx={{
-                            borderColor: "black",
-                            color: "black",
-                            "&:hover": {
-                              backgroundColor: "black",
-                              color: "white",
-                            },
-                          }}
-                        >
-                          View Cart
-                        </Button>
-                        <Button
-                          fullWidth
-                          component={NavLink}
-                          to="/checkout"
-                          variant="contained"
-                          sx={{
-                            backgroundColor: "#b22222",
-                            "&:hover": { backgroundColor: "#911b1b" },
-                          }}
-                        >
-                          Checkout
-                        </Button>
+                        <Button fullWidth component={NavLink} to="/cart" variant="outlined" sx={{ borderColor: "black", color: "black", "&:hover": { backgroundColor: "black", color: "white" } }}>View Cart</Button>
+                        <Button fullWidth component={NavLink} to="/checkout" variant="contained" sx={{ backgroundColor: "#b22222", "&:hover": { backgroundColor: "#911b1b" } }}>Checkout</Button>
                       </Box>
                     </>
                   )}
@@ -404,15 +234,8 @@ const Header = () => {
               )}
             </Box>
 
-            {/* Mobile account icon */}
-            <IconButton
-              component={NavLink}
-              to="/signin"
-              sx={{
-                color: scrolled ? "black" : "white",
-                display: { xs: "inline-flex", md: "none" },
-              }}
-            >
+            {/* Account icon on mobile */}
+            <IconButton component={NavLink} to="/signin" sx={{ color: scrolled ? "black" : "white", display: { xs: "inline-flex", md: "none" } }}>
               <PersonOutlineIcon />
             </IconButton>
           </Box>
@@ -421,183 +244,124 @@ const Header = () => {
 
       {/* DRAWER */}
       <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={handleDrawerToggle}
-        PaperProps={{
-          sx: {
-            width: 280,
-            bgcolor: "#fff",
-            p: 1,
-            overflow: "visible",
-            zIndex: 1301,
-          },
-        }}
-        ModalProps={{ keepMounted: true }}
-      >
-        <Typography
-          variant="h6"
+  ref={drawerRef}
+  anchor="left"
+  open={drawerOpen}
+  onClose={handleDrawerToggle}
+  PaperProps={{
+    sx: {
+      width: 280,
+      bgcolor: "#fff",
+      p: 1,
+      zIndex: 1301,
+      display: "flex",
+      flexDirection: "column",
+      height: "100%",
+    },
+  }}
+  ModalProps={{ keepMounted: true }}
+>
+  <Typography variant="h6" sx={{ fontWeight: "bold", px: 2, py: 1, borderBottom: "1px solid #eee" }}>Categories</Typography>
+
+  {/* SCROLLABLE LIST */}
+  <Box sx={{ flex: 1, overflowY: "auto" }}>
+    <List>
+      {Categories.map((category) => {
+        const filteredSubs = (category.subcategories || []).filter(sub => sub && sub !== "null" && sub !== "nill");
+        const hasSubs = filteredSubs.length > 0;
+        const isSale = String(category.name).toLowerCase() === "sale";
+
+        return (
+          <Box key={category.id}>
+            <ListItemButton
+              onMouseEnter={(e) => !isMobile && hasSubs && handleMouseEnter(e, category)}
+              onClick={() => {
+                if (!hasSubs) {
+                  navigate(`/category/${encodeURIComponent(category.name)}`);
+                  handleDrawerToggle();
+                } else if (isMobile) {
+                  setHoveredCategory(hoveredCategory?.id === category.id ? null : category);
+                }
+              }}
+              sx={{ display: "flex", justifyContent: "space-between", "&:hover": { bgcolor: "#f5f5f5" } }}
+            >
+              <ListItemText
+                primary={<Typography fontWeight="bold" sx={{ color: isSale ? "#b22222" : "inherit" }}>{category.name}</Typography>}
+              />
+              {hasSubs && <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />}
+            </ListItemButton>
+
+            {/* Mobile subcategories */}
+            {isMobile && hoveredCategory?.id === category.id && filteredSubs.length > 0 && (
+              <Box sx={{ pl: 4, display: "flex", flexDirection: "column", gap: 1, mb: 1 }}>
+                {filteredSubs.map((sub, idx) => (
+                  <Button
+                    key={idx}
+                    component={NavLink}
+                    to={`/category/${encodeURIComponent(category.name)}?subcategory=${encodeURIComponent(sub)}`}
+                    onClick={handleDrawerToggle}
+                    sx={{
+                      justifyContent: "flex-start",
+                      textTransform: "none",
+                      fontWeight: 500,
+                      color: "black",
+                      "&:hover": { color: "#b22222", bgcolor: "transparent" },
+                    }}
+                  >
+                    {sub}
+                  </Button>
+                ))}
+              </Box>
+            )}
+          </Box>
+        );
+      })}
+    </List>
+  </Box>
+
+  {/* Drawer footer */}
+  <Box sx={{ pt: 2, borderTop: "1px solid #eee" }}>
+    {["Made To Measure", "Uniworth Black", "Order Tracking", "Shipping Policy"].map((text, i) => (
+      <ListItemButton key={i}><ListItemText primary={text} /></ListItemButton>
+    ))}
+  </Box>
+</Drawer>
+
+
+      {/* Desktop submenu */}
+      {!isMobile && hoveredCategory?.subcategories?.length > 0 && (
+        <Paper
+          elevation={6}
+          onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+          onMouseLeave={handleMouseLeave}
           sx={{
-            fontWeight: "bold",
-            px: 2,
-            py: 1,
-            borderBottom: "1px solid #eee",
+            position: "fixed",
+            top: submenuPosition.top - 10,
+            left: 280,
+            minWidth: 500,
+            bgcolor: "white",
+            borderRadius: 2,
+            p: 3,
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 1.5,
+            boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
+            zIndex: 1400,
           }}
         >
-          Categories
-        </Typography>
-
-        <List onMouseLeave={handleMouseLeave}>
-          {Categories.map((category) => {
-            const filteredSubs = (category.subcategories || []).filter(
-              (sub) => sub && sub !== "null" && sub !== "nill"
-            );
-            const hasSubs = filteredSubs.length > 0;
-            const isSale = String(category.name).toLowerCase() === "sale";
-
-            return (
-              <Box key={category.id}>
-                <ListItemButton
-                  onMouseEnter={(e) =>
-                    !isMobile && hasSubs && handleMouseEnter(e, category)
-                  }
-                  onClick={() => {
-                    if (!hasSubs) {
-                      navigate(
-                        `/category/${encodeURIComponent(category.name)}`
-                      );
-                      handleDrawerToggle();
-                    } else if (isMobile) {
-                      setMobileOpenCategoryId(
-                        mobileOpenCategoryId === category.id
-                          ? null
-                          : category.id
-                      );
-                    }
-                  }}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    "&:hover": { bgcolor: "#f5f5f5" },
-                  }}
-                >
-                  <ListItemText
-                    primary={
-                      <Typography
-                        fontWeight="bold"
-                        fontSize="0.95rem"
-                        sx={{ color: isSale ? "#b22222" : "inherit" }}
-                      >
-                        {category.name}
-                      </Typography>
-                    }
-                  />
-                  {hasSubs && (
-                    <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
-                  )}
-                </ListItemButton>
-
-                {/* MOBILE SUBCATEGORIES */}
-                {isMobile &&
-                  mobileOpenCategoryId === category.id &&
-                  filteredSubs.length > 0 && (
-                    <Box
-                      sx={{
-                        pl: 4,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 1,
-                        mb: 1,
-                      }}
-                    >
-                      {filteredSubs.map((sub, idx) => (
-                        <Button
-                          key={idx}
-                          component={NavLink}
-                          to={`/category/${encodeURIComponent(
-                            category.name
-                          )}?subcategory=${encodeURIComponent(sub)}`}
-                          onClick={handleDrawerToggle}
-                          sx={{
-                            justifyContent: "flex-start",
-                            textTransform: "none",
-                            fontWeight: 500,
-                            color: "black",
-                            "&:hover": {
-                              color: "#b22222",
-                              bgcolor: "transparent",
-                            },
-                          }}
-                        >
-                          {sub}
-                        </Button>
-                      ))}
-                    </Box>
-                  )}
-              </Box>
-            );
-          })}
-        </List>
-
-        {/* Drawer Footer */}
-        <Box sx={{ mt: 4, pt: 2, borderTop: "1px solid #eee" }}>
-          {[
-            "Made To Measure",
-            "Uniworth Black",
-            "Order Tracking",
-            "Shipping Policy",
-          ].map((text, i) => (
-            <ListItemButton key={i}>
-              <ListItemText primary={text} />
-            </ListItemButton>
+          {hoveredCategory.subcategories.filter(sub => sub !== "null").map((sub, index) => (
+            <Button
+              key={index}
+              component={NavLink}
+              to={`/category/${encodeURIComponent(hoveredCategory.name)}?subcategory=${encodeURIComponent(sub)}`}
+              onClick={handleDrawerToggle}
+              sx={{ justifyContent: "flex-start", color: "black", textTransform: "none", fontWeight: 500, "&:hover": { color: "#b22222", bgcolor: "transparent" } }}
+            >
+              {sub}
+            </Button>
           ))}
-        </Box>
-
-        {/* DESKTOP FLOATING SUBMENU */}
-        {!isMobile && hoveredCategory?.subcategories?.length > 0 && (
-          <Paper
-            elevation={6}
-            onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-            onMouseLeave={handleMouseLeave}
-            sx={{
-              position: "fixed",
-              top: submenuPosition.top - 10,
-              left: 280,
-              minWidth: 500,
-              bgcolor: "white",
-              borderRadius: 2,
-              p: 3,
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 1.5,
-              boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
-              zIndex: 1400,
-            }}
-          >
-            {hoveredCategory.subcategories
-              .filter((sub) => sub !== "null")
-              .map((sub, index) => (
-                <Button
-                  key={index}
-                  component={NavLink}
-                  to={`/category/${encodeURIComponent(
-                    hoveredCategory.name
-                  )}?subcategory=${encodeURIComponent(sub)}`}
-                  onClick={handleDrawerToggle}
-                  sx={{
-                    justifyContent: "flex-start",
-                    color: "black",
-                    textTransform: "none",
-                    fontWeight: 500,
-                    "&:hover": { color: "#b22222", bgcolor: "transparent" },
-                  }}
-                >
-                  {sub}
-                </Button>
-              ))}
-          </Paper>
-        )}
-      </Drawer>
+        </Paper>
+      )}
     </>
   );
 };

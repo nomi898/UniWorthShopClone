@@ -95,7 +95,7 @@ const CategoryPage = () => {
     <div>
       
 
-      <div style={{ paddingTop: "120px", paddingLeft: "20px", paddingRight: "20px" }}>
+      <div style={{ paddingTop: "30px", paddingLeft: "20px", paddingRight: "20px" }}>
         {/* Breadcrumb */}
         <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
           <Link to="/" style={{ textDecoration: "none", color: "gray", fontSize: "14px" }}>
