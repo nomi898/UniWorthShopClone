@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Grid,
@@ -17,12 +17,15 @@ import {
   FormControl,
 } from "@mui/material";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 const currency = (n) => `Rs.${Number(n).toLocaleString()}.00`;
 
 export default function Checkout() {
   const cartItems = useSelector((state) => state?.cart?.items || []);
+  const [checkoutType, setCheckoutType] = useState("login"); // 'login' | 'guest'
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const navigate = useNavigate();
 
   const subtotal = useMemo(
     () => cartItems.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0),
@@ -40,14 +43,29 @@ export default function Checkout() {
             </Typography>
 
             <Box sx={{ display: "flex", gap: 3, mb: 2, alignItems: "center" }}>
-              <FormControlLabel control={<Radio defaultChecked />} label="Register" />
-              <FormControlLabel control={<Radio />} label="Guest" />
-              <Typography variant="body2" sx={{ ml: "auto", color: "#e74c3c", cursor: "pointer" }}>
-                Returning Customer? Click here to login
-              </Typography>
+              <RadioGroup
+                row
+                value={checkoutType}
+                onChange={(e) => setCheckoutType(e.target.value)}
+              >
+                <FormControlLabel value="login" control={<Radio />} label="Login" />
+                <FormControlLabel value="guest" control={<Radio />} label="Guest" />
+              </RadioGroup>
             </Box>
 
-            <Grid container spacing={2}>
+            {checkoutType === "login" && (
+              <Box sx={{ p: 2, mb: 3, border: "1px solid #fdecea", bgcolor: "#fff6f5", borderRadius: 1, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
+                <Typography sx={{ color: "#b22222", fontWeight: 500 }}>
+                  Please login to continue checkout.
+                </Typography>
+                <Button variant="contained" color="error" onClick={() => navigate("/signin")}>
+                  Go to Login
+                </Button>
+              </Box>
+            )}
+
+            {checkoutType === "guest" && (
+              <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <TextField fullWidth required label="Full Name" size="small" />
               </Grid>
@@ -96,7 +114,8 @@ export default function Checkout() {
               <Grid item xs={12}>
                 <TextField fullWidth multiline minRows={3} label="Order Notes" placeholder="Notes about your order, eg special notes for delivery" />
               </Grid>
-            </Grid>
+              </Grid>
+            )}
           </Paper>
         </Grid>
 
@@ -106,6 +125,17 @@ export default function Checkout() {
             <Typography variant="h5" sx={{ fontWeight: 500, mb: 2 }}>
               Order Summary
             </Typography>
+
+            {orderPlaced && (
+              <Box sx={{ p: 2, mb: 2, border: "1px solid #e0f2e9", bgcolor: "#f3fcf8", borderRadius: 1 }}>
+                <Typography sx={{ color: "#148f55", fontWeight: 600, mb: 0.5 }}>
+                  Order placed successfully
+                </Typography>
+                <Typography sx={{ color: "#148f55" }}>
+                  Total charged: {currency(subtotal)}
+                </Typography>
+              </Box>
+            )}
 
             {/* Items */}
             <Box>
@@ -159,7 +189,18 @@ export default function Checkout() {
               <Button component={NavLink} to="/cart" variant="outlined" fullWidth>
                 Edit
               </Button>
-              <Button variant="contained" color="error" fullWidth>
+              <Button
+                variant="contained"
+                color="error"
+                fullWidth
+                onClick={() => {
+                  if (checkoutType === "login") {
+                    navigate("/signin");
+                  } else {
+                    setOrderPlaced(true);
+                  }
+                }}
+              >
                 Place Order
               </Button>
             </Box>

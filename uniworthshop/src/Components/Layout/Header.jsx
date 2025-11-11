@@ -79,15 +79,6 @@ const Header = () => {
   // drawer ref for accessibility
   const drawerRef = useRef(null);
 
-  useEffect(() => {
-    if (drawerOpen && drawerRef.current) {
-      const firstFocusable = drawerRef.current.querySelector(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      firstFocusable?.focus();
-    }
-  }, [drawerOpen]);
-
   return (
     <>
       {/* HEADER */}
@@ -188,6 +179,14 @@ const Header = () => {
             {/* BAG */}
             <Box sx={{ position: "relative" }} onMouseEnter={() => !isMobile && setCartHover(true)} onMouseLeave={() => !isMobile && setCartHover(false)}>
               <Button
+              // cart page for mobile opening 
+                onClick={() => {
+                  if (isMobile) {
+                    navigate("/cart");
+                  } else {
+                    setCartHover((prev) => !prev);
+                  }
+                }}
                 sx={{ color: scrolled ? "black" : "white", px: 2, py: 1, borderRadius: 1, textTransform: "none", "&:hover": { backgroundColor: scrolled ? "#f2f2f2" : "rgba(255,255,255,0.1)" } }}
                 startIcon={<Badge color="warning" badgeContent={itemCount} invisible={itemCount === 0} overlap="circular"><AddShoppingCartIcon /></Badge>}
               >
