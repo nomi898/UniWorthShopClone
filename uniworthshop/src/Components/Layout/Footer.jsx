@@ -23,6 +23,7 @@ import cards from "../../assets/Images/cards.png";
 const Footer = () => {
   const [email, setEmail] = useState("");
 
+  // for console
   const handleSubscribe = () => {
     console.log("Subscribed:", email);
     setEmail("");
@@ -39,7 +40,7 @@ const Footer = () => {
           display: "flex",
           alignItems: "center", // vertical alignment
           justifyContent: "space-between", // horizontal spacing
-          flexWrap: "wrap", // wrap on small screens
+          flexWrap: "wrap", // wrap on small screens: next line
           gap: 2, // spacing when wrapped
         }}
       >

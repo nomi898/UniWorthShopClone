@@ -11,6 +11,8 @@ import {
   Divider,
   IconButton,
   Badge,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -31,20 +33,21 @@ const Header = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [submenuPosition, setSubmenuPosition] = useState({ top: 0 });
   const [cartHover, setCartHover] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [mobileOpenCategoryId, setMobileOpenCategoryId] = useState(null);
+
+  const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
   const dispatch = useDispatch();
 
-// cart
   const cart = useSelector((state) => state?.cart);
   const cartItems = cart?.items || [];
   const subtotal = cart?.subtotal || 0;
   const itemCount = cart?.itemCount || 0;
 
-  // Scroll effect for homepage
+  // Scroll effect
   useEffect(() => {
     if (!isHomePage) {
       setScrolled(true);
@@ -59,16 +62,20 @@ const Header = () => {
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
     setHoveredCategory(null);
+    setMobileOpenCategoryId(null);
   };
 
-  // Submenu positioning
+  // Desktop submenu positioning
   const handleMouseEnter = (event, category) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setSubmenuPosition({ top: rect.top });
     setHoveredCategory(category);
   };
-//mouse leaves the category submenu
   const handleMouseLeave = () => setHoveredCategory(null);
+
+  // Mobile detection
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
@@ -99,7 +106,7 @@ const Header = () => {
             boxShadow: scrolled ? "0 2px 4px rgba(0,0,0,0.1)" : "none",
           }}
         >
-          {/* Menu icon & text */}
+          {/* Menu icon & search */}
           <Box
             sx={{
               display: "flex",
@@ -110,17 +117,30 @@ const Header = () => {
             onClick={handleDrawerToggle}
           >
             <MenuIcon
-              sx={{ fontSize: { xs: 26, md: 30 }, color: scrolled ? "black" : "white" }}
+              sx={{
+                fontSize: { xs: 26, md: 30 },
+                color: scrolled ? "black" : "white",
+              }}
             />
             <Typography
-              sx={{ display: { xs: "none", md: "block" }, color: scrolled ? "black" : "white", fontWeight: 500 }}
+              sx={{
+                display: { xs: "none", md: "block" },
+                color: scrolled ? "black" : "white",
+                fontWeight: 500,
+              }}
             >
               Menu
             </Typography>
-            {/* Compact search icon beside menu on mobile */}
             <IconButton
-              onClick={(e) => { e.stopPropagation(); setShowSearch((s) => !s); }}
-              sx={{ ml: 1, display: { xs: "inline-flex", md: "none" }, color: scrolled ? "black" : "white" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSearch((s) => !s);
+              }}
+              sx={{
+                ml: 1,
+                display: { xs: "inline-flex", md: "none" },
+                color: scrolled ? "black" : "white",
+              }}
             >
               <SearchIcon />
             </IconButton>
@@ -219,7 +239,7 @@ const Header = () => {
               </Button>
             )}
 
-            {/* BAG WITH DROPDOWN */}
+            {/* BAG */}
             <Box
               sx={{ position: "relative" }}
               onMouseEnter={() => setCartHover(true)}
@@ -252,7 +272,6 @@ const Header = () => {
                 <Box sx={{ display: { xs: "none", md: "block" } }}>Bag</Box>
               </Button>
 
-              {/* CART DROPDOWN */}
               {cartHover && (
                 <Paper
                   elevation={6}
@@ -308,8 +327,13 @@ const Header = () => {
                               <Typography sx={{ fontSize: 13, color: "#555" }}>
                                 Qty: {item.quantity || 1}
                               </Typography>
-                              <Typography sx={{ fontSize: 14, fontWeight: 500, mt: 0.5 }}>
-                                Rs.{(item.price * (item.quantity || 1)).toLocaleString()}
+                              <Typography
+                                sx={{ fontSize: 14, fontWeight: 500, mt: 0.5 }}
+                              >
+                                Rs.
+                                {(
+                                  item.price * (item.quantity || 1)
+                                ).toLocaleString()}
                               </Typography>
                             </Box>
                           </Box>
@@ -321,7 +345,6 @@ const Header = () => {
                           </IconButton>
                         </Box>
                       ))}
-
                       <Divider sx={{ my: 1 }} />
                       <Box
                         sx={{
@@ -345,7 +368,6 @@ const Header = () => {
                         <Typography>Rs.{subtotal.toLocaleString()}</Typography>
                       </Box>
                       <Divider sx={{ my: 1 }} />
-
                       <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
                         <Button
                           fullWidth
@@ -382,11 +404,14 @@ const Header = () => {
               )}
             </Box>
 
-            {/* Account icon (signin) on mobile */}
+            {/* Mobile account icon */}
             <IconButton
               component={NavLink}
               to="/signin"
-              sx={{ color: scrolled ? "black" : "white", display: { xs: "inline-flex", md: "none" } }}
+              sx={{
+                color: scrolled ? "black" : "white",
+                display: { xs: "inline-flex", md: "none" },
+              }}
             >
               <PersonOutlineIcon />
             </IconButton>
@@ -394,7 +419,7 @@ const Header = () => {
         </Box>
       </Box>
 
-      {/* LEFT DRAWER (MENU) */}
+      {/* DRAWER */}
       <Drawer
         anchor="left"
         open={drawerOpen}
@@ -431,36 +456,85 @@ const Header = () => {
             const isSale = String(category.name).toLowerCase() === "sale";
 
             return (
-              <ListItemButton
-                key={category.id}
-                onMouseEnter={(e) => hasSubs && handleMouseEnter(e, category)}
-                onClick={() => {
-                  if (!hasSubs) {
-                    navigate(`/category/${encodeURIComponent(category.name)}`);
-                    handleDrawerToggle();
+              <Box key={category.id}>
+                <ListItemButton
+                  onMouseEnter={(e) =>
+                    !isMobile && hasSubs && handleMouseEnter(e, category)
                   }
-                }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  "&:hover": { bgcolor: "#f5f5f5" },
-                }}
-              >
-                <ListItemText
-                  primary={
-                    <Typography
-                      fontWeight="bold"
-                      fontSize="0.95rem"
-                      sx={{ color: isSale ? "#b22222" : "inherit" }}
+                  onClick={() => {
+                    if (!hasSubs) {
+                      navigate(
+                        `/category/${encodeURIComponent(category.name)}`
+                      );
+                      handleDrawerToggle();
+                    } else if (isMobile) {
+                      setMobileOpenCategoryId(
+                        mobileOpenCategoryId === category.id
+                          ? null
+                          : category.id
+                      );
+                    }
+                  }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    "&:hover": { bgcolor: "#f5f5f5" },
+                  }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography
+                        fontWeight="bold"
+                        fontSize="0.95rem"
+                        sx={{ color: isSale ? "#b22222" : "inherit" }}
+                      >
+                        {category.name}
+                      </Typography>
+                    }
+                  />
+                  {hasSubs && (
+                    <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
+                  )}
+                </ListItemButton>
+
+                {/* MOBILE SUBCATEGORIES */}
+                {isMobile &&
+                  mobileOpenCategoryId === category.id &&
+                  filteredSubs.length > 0 && (
+                    <Box
+                      sx={{
+                        pl: 4,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        mb: 1,
+                      }}
                     >
-                      {category.name}
-                    </Typography>
-                  }
-                />
-                {hasSubs && (
-                  <ArrowForwardIosIcon sx={{ fontSize: 14, color: "#666" }} />
-                )}
-              </ListItemButton>
+                      {filteredSubs.map((sub, idx) => (
+                        <Button
+                          key={idx}
+                          component={NavLink}
+                          to={`/category/${encodeURIComponent(
+                            category.name
+                          )}?subcategory=${encodeURIComponent(sub)}`}
+                          onClick={handleDrawerToggle}
+                          sx={{
+                            justifyContent: "flex-start",
+                            textTransform: "none",
+                            fontWeight: 500,
+                            color: "black",
+                            "&:hover": {
+                              color: "#b22222",
+                              bgcolor: "transparent",
+                            },
+                          }}
+                        >
+                          {sub}
+                        </Button>
+                      ))}
+                    </Box>
+                  )}
+              </Box>
             );
           })}
         </List>
@@ -479,8 +553,8 @@ const Header = () => {
           ))}
         </Box>
 
-        {/* FLOATING SUBMENU */}
-        {hoveredCategory?.subcategories?.length > 0 && (
+        {/* DESKTOP FLOATING SUBMENU */}
+        {!isMobile && hoveredCategory?.subcategories?.length > 0 && (
           <Paper
             elevation={6}
             onMouseEnter={() => setHoveredCategory(hoveredCategory)}
@@ -506,7 +580,9 @@ const Header = () => {
                 <Button
                   key={index}
                   component={NavLink}
-                  to={`/category/${encodeURIComponent(hoveredCategory.name)}?subcategory=${encodeURIComponent(sub)}`}
+                  to={`/category/${encodeURIComponent(
+                    hoveredCategory.name
+                  )}?subcategory=${encodeURIComponent(sub)}`}
                   onClick={handleDrawerToggle}
                   sx={{
                     justifyContent: "flex-start",
