@@ -16,15 +16,18 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
+import { clearCart } from "../store/slices/cartlist";
 
 const currency = (n) => `Rs.${Number(n).toLocaleString()}.00`;
 
 export default function Checkout() {
   const cartItems = useSelector((state) => state?.cart?.items || []);
+  const dispatch = useDispatch();
   const [checkoutType, setCheckoutType] = useState("login"); // 'login' | 'guest'
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [lastOrderTotal, setLastOrderTotal] = useState(null);
   const navigate = useNavigate();
 
   const subtotal = useMemo(
@@ -132,7 +135,7 @@ export default function Checkout() {
                   Order placed successfully
                 </Typography>
                 <Typography sx={{ color: "#148f55" }}>
-                  Total charged: {currency(subtotal)}
+                  Total charged: {currency(lastOrderTotal ?? subtotal)}
                 </Typography>
               </Box>
             )}
@@ -198,6 +201,8 @@ export default function Checkout() {
                     navigate("/signin");
                   } else {
                     setOrderPlaced(true);
+                    setLastOrderTotal(subtotal);
+                    dispatch(clearCart());
                   }
                 }}
               >
